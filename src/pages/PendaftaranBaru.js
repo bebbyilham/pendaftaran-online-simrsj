@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 import Header from "parts/Header";
 import Footer from "parts/Footer";
-import { ToastContainer} from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PendaftaranBaruForm from "parts/PendaftaranBaruForm";
 
@@ -14,12 +14,12 @@ export default function Pendaftaran({ history }) {
     <>
       <section className="container mx-auto pt-10 px-4 guest-page relative z-10">
         <Header onLight></Header>
-         <ToastContainer />
+        <ToastContainer />
       </section>
       <section className="container mx-auto pt-10 px-4">
         <PendaftaranBaruForm></PendaftaranBaruForm>
       </section>
-      <section className="mt-24 bg-orange-500 py-12">
+      <section className="mt-24 bg-blue-500 py-12">
         <Footer></Footer>
       </section>
     </>

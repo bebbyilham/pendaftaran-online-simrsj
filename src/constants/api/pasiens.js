@@ -4,7 +4,7 @@ import axios from "configs/axios";
 export default {
   //private
   // login: (credentials) => axios.post("/users/login", credentials),
-  pasienbaru: (payload) => axios.post("/api/pasien/baru", payload),
+  pasienbaru: (payload) => axios.post("/api/antrean/infopasienbaru", payload),
   // refresh: (credentials) =>
   //   axios.post("/refresh-tokens", {
   //     refresh_token: credentials.refresh_token,

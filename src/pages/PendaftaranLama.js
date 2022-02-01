@@ -16,7 +16,7 @@ export default function Pendaftaran({ history }) {
       <section className="container mx-auto pt-10 px-4">
         <PendaftaranLamaForm></PendaftaranLamaForm>
       </section>
-      <section className="mt-24 bg-orange-500 py-12">
+      <section className="mt-24 bg-blue-500 py-12">
         <Footer></Footer>
       </section>
     </>

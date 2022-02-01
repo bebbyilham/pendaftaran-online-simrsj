@@ -12,6 +12,8 @@ import Partners from "parts/Partners";
 // import ListBlogs from "src/parts/ListBlogs";
 // import ListCategories from "src/parts/ListCategories";
 import Footer from "parts/Footer";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // import blogs from "src/constants/api/blogs";
 
@@ -29,6 +31,7 @@ function Home({ data }) {
           <Circle className="absolute left-0 bottom-0"></Circle>
           <div className="container mx-auto px-4">
             <Header></Header>
+            <ToastContainer />
             <Hero></Hero>
           </div>
         </section>
