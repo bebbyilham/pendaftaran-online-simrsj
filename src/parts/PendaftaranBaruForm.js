@@ -7,9 +7,10 @@ import bpjs from "constants/api/bpjs";
 
 import { ReactComponent as RegisterImages } from "assets/images/daftar-baru.svg";
 
+// eslint-disable-next-line
 import { useSelector } from "react-redux";
-
 import useForm from "helpers/hooks/useForm";
+// eslint-disable-next-line
 import fieldErrors from "helpers/fieldErrors";
 
 import Select from "components/Form/Select";
@@ -108,7 +109,7 @@ function LoginForm({ history }) {
 
   const [tlahir, setTlahirDate] = useState(null);
   const [startDate, setStartDate] = useState(null);
-
+  // eslint-disable-next-line
   const [errors, seterrors] = useState(null);
 
   async function submit(e) {

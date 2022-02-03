@@ -3,10 +3,11 @@ import React, { useState, useRef } from "react";
 import { withRouter } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
+// eslint-disable-next-line
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import Select from "components/Form/Select";
+// import Select from "components/Form/Select";
 import Input from "components/Form/Input";
 
 import useForm from "helpers/hooks/useForm";
@@ -18,7 +19,7 @@ import media from "constants/api/media";
 import { populateProfile } from "store/actions/users";
 
 import image2base64 from "utils/image2base64";
-
+// eslint-disable-next-line
 import { ReactComponent as DefaultUser } from "assets/images/default-avatar.svg";
 
 import DatePicker from "react-datepicker";
@@ -27,6 +28,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 function SettingForm({ details }) {
   const dispatch = useDispatch();
+  // eslint-disable-next-line
   const addPicture = useRef(null);
 
   const [state, setKey, setState] = useForm({
@@ -41,7 +43,7 @@ function SettingForm({ details }) {
   const [startDate, setStartDate] = useState(new Date());
 
   const [errors, setErrors] = useState(null);
-
+  // eslint-disable-next-line
   function previewImage(e) {
     e.persist();
     image2base64(e.target.files[0]).then((image) => {

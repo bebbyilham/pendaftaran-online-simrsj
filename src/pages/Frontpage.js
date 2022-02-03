@@ -1,10 +1,10 @@
 import React from "react";
-import propTypes from "prop-types";
+// import propTypes from "prop-types";
 
-import { Link, withRouter } from "react-router-dom";
+// import { Link, withRouter } from "react-router-dom";
 // import { ReactComponent as Logo } from "assets/images/logo.svg";
 import { ReactComponent as Circle } from "assets/images/circle.svg";
-import { ReactComponent as Sunshine } from "assets/images/sunshine.svg";
+// import { ReactComponent as Sunshine } from "assets/images/sunshine.svg";
 
 import Header from "parts/Header";
 import Hero from "parts/Hero";

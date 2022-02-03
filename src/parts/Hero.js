@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import { Link, withRouter } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
+// import { Link, withRouter } from "react-router-dom";
 
 import { ReactComponent as Pic } from "assets/images/pic.svg";
 
 export default function Hero() {
-  const [state, setstate] = useState(() => "");
+  // const [state, setstate] = useState(() => "");
 
   // function submit() {
   //   window.open(
