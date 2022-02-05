@@ -2,17 +2,7 @@
 import axios from "configs/axios";
 
 export default {
-  //private
-  // login: (credentials) => axios.post("/users/login", credentials),
   pasienbaru: (payload) => axios.post("/api/antrean/infopasienbaru", payload),
-  // refresh: (credentials) =>
-  //   axios.post("/refresh-tokens", {
-  //     refresh_token: credentials.refresh_token,
-  //     email: credentials.email,
-  //   }),
 
-  //public
-  // details: () => axios.get("/users"),
-  // update: (data) => axios.put("users", data),
-  // logout: () => axios.post("/users/logout"),
+  detailspasien: (id) => axios.get(`/api/pasiens/${id}`).then((res) => res),
 };

@@ -164,7 +164,7 @@ function LoginForm({ history }) {
         // });
       })
       .catch((err) => {
-        console.log(err.message);
+        console.log(err?.response?.data?.message);
         toast.error("Data belum lengkap !", {
           position: "top-center",
           autoClose: 5000,
