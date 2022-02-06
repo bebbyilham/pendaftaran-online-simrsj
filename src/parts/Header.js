@@ -26,7 +26,7 @@ function Header({ onLight, location }) {
       ].join(" ")}
     >
       <div style={{ height: 54 }} className="z-50">
-        <Link to="/">
+        <Link to="/home">
           <Logo className={classNameLogo}></Logo>
         </Link>
       </div>

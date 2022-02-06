@@ -23,7 +23,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 
-function LoginForm({ history }) {
+function PendaftaranLamaForm({ history }) {
   const [
     {
       nama,
@@ -63,7 +63,7 @@ function LoginForm({ history }) {
       .then((res) => {
         if ((res.status = "success")) {
           setcekmr(res.status);
-          toast.info("Data ditemukan !", {
+          toast.info("Data Rekam Medis ditemukan !", {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
@@ -78,6 +78,7 @@ function LoginForm({ history }) {
         console.log(res.data.no_mr);
       })
       .catch((err) => {
+        setcekmr(err?.response?.data?.status);
         seterrors(err?.response?.data?.message);
       });
   }
@@ -227,7 +228,7 @@ function LoginForm({ history }) {
                 type="text"
                 onChange={setState}
                 placeholder="Masukan No. MR"
-                labelName="Nomor Rekam Medis"
+                labelName="No. Rekam Medis"
                 readOnly={true}
               />
             </div>
@@ -240,8 +241,8 @@ function LoginForm({ history }) {
               </button>
             </div>
           </div>
-          {cekmr === "success" && (
-            <form>
+          {(cekmr === "success" && (
+            <>
               <Input
                 value={nama}
                 // error={ERRORS?.nama?.message}
@@ -389,8 +390,9 @@ function LoginForm({ history }) {
                   </div>
                 </div>
               )}
-            </form>
-          )}
+            </>
+          )) ||
+            cekmr === "error"}
 
           <div className="hidden sm:block" aria-hidden="true">
             <div className="py-5">
@@ -420,4 +422,4 @@ function LoginForm({ history }) {
   );
 }
 
-export default withRouter(LoginForm);
+export default withRouter(PendaftaranLamaForm);

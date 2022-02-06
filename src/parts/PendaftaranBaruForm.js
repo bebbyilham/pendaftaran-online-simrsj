@@ -23,7 +23,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 
-function LoginForm({ history }) {
+function PendaftaranBaruForm({ history }) {
   const [
     {
       nama,
@@ -366,4 +366,4 @@ function LoginForm({ history }) {
   );
 }
 
-export default withRouter(LoginForm);
+export default withRouter(PendaftaranBaruForm);
