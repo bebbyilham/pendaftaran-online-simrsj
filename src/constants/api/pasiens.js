@@ -5,4 +5,6 @@ export default {
   pasienbaru: (payload) => axios.post("/api/antrean/infopasienbaru", payload),
 
   detailspasien: (id) => axios.get(`/api/pasiens/${id}`).then((res) => res),
+  pasienlama: (payload) =>
+    axios.post("/api/pendaftaranonline/pasienlama", payload),
 };

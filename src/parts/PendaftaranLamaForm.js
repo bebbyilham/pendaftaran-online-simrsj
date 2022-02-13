@@ -16,6 +16,7 @@ import fieldErrors from "helpers/fieldErrors";
 import Select from "components/Form/Select";
 import Input from "components/Form/Input";
 
+import moment from "moment";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -26,17 +27,15 @@ import { toast } from "react-toastify";
 function PendaftaranLamaForm({ history }) {
   const [
     {
+      // eslint-disable-next-line
       nama,
       nomr,
+      // eslint-disable-next-line
       nik,
-      nomorkk,
-      jeniskelamin,
       nohp,
-      alamat,
       pembayaran,
       pembayaranlain,
       nokartu,
-      tanggallahir,
       politujuan,
       tglkunjungan,
     },
@@ -45,13 +44,9 @@ function PendaftaranLamaForm({ history }) {
     nama: "",
     nomr: "",
     nik: "",
-    nomorkk: "",
     nohp: "",
-    alamat: "",
-    jeniskelamin: "",
     pembayaran: "",
     pembayaranlain: "",
-    tanggallahir: "",
     nokartu: "",
     politujuan: "",
     tglkunjungan: "",
@@ -72,6 +67,9 @@ function PendaftaranLamaForm({ history }) {
             draggable: true,
             progress: undefined,
           });
+          // nama(res.status);
+          setceknama(res.data.nama_pasien);
+          setceknik(res.data.nomor_pengenal);
         }
 
         console.log(res.status);
@@ -134,44 +132,52 @@ function PendaftaranLamaForm({ history }) {
         seterrors(err?.response?.data?.message);
       });
   }
-
+  // eslint-disable-next-line
   const [tlahir, setTlahirDate] = useState(null);
   const [startDate, setStartDate] = useState(null);
   // eslint-disable-next-line
   const [errors, seterrors] = useState(null);
   const [cekmr, setcekmr] = useState(null);
+  const [ceknama, setceknama] = useState(null);
+  const [ceknik, setceknik] = useState(null);
 
   async function submit(e) {
     e.preventDefault();
 
     pasien
-      .pasienbaru({
+      .pasienlama({
+        norm: nomr,
         nomorkartu: nokartu,
-        nik,
-        nama,
-        jeniskelamin,
-        tanggallahir: tlahir,
+        nik: ceknik,
+        nama: ceknama,
         nohp,
-        alamat,
-        nomorkk,
+        kodepoli: politujuan,
+        jeniskunjungan: "0",
+        tanggalperiksa: moment(startDate).format("YYYY-MM-DD"),
         pembayaran: pembayaran === "bpjs" ? pembayaranlain : pembayaran,
       })
       .then((res) => {
-        // console.log(res.status);
+        console.log(res.status);
         if (res.status === "success") {
           history.push("/home");
-          toast.success(res.message + " dengan nomor " + res.data.norm, {
-            position: "top-center",
-            autoClose: false,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
+          toast.success(
+            "Pendaftaran Berhasil NO. RM " +
+              res.data.norm +
+              " KODE BOOKING : " +
+              res.data.kodebooking,
+            {
+              position: "top-center",
+              autoClose: false,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            }
+          );
         }
-        if (res.status === "Ok") {
-          toast.warning(res.message, {
+        if (res.status === "Gagal") {
+          toast.error(res.message, {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
@@ -181,6 +187,7 @@ function PendaftaranLamaForm({ history }) {
             progress: undefined,
           });
         }
+
         // history.push("/home");
         // toast.success(res.message, {
         //   position: "top-center",
@@ -225,11 +232,10 @@ function PendaftaranLamaForm({ history }) {
                 value={nomr}
                 // error={ERRORS?.nomr?.message}
                 name="nomr"
-                type="text"
+                type="number"
                 onChange={setState}
                 placeholder="Masukan No. MR"
                 labelName="No. Rekam Medis"
-                readOnly={true}
               />
             </div>
             <div className="w-1/4 mt-5 ml-2">
@@ -244,79 +250,31 @@ function PendaftaranLamaForm({ history }) {
           {(cekmr === "success" && (
             <>
               <Input
-                value={nama}
+                value={ceknama}
                 // error={ERRORS?.nama?.message}
                 name="nama"
                 onChange={setState}
                 placeholder="Masukan nama lengkap"
                 labelName="Nama"
+                readOnly={true}
               />
               <Input
-                value={nik}
+                value={ceknik}
                 // error={ERRORS?.nik?.message}
                 name="nik"
                 onChange={setState}
                 placeholder="Masukan nik lengkap"
                 labelName="NIK"
+                readOnly={true}
               />
-              <Input
-                value={nomorkk}
-                // error={ERRORS?.nomorkk?.message}
-                name="nomorkk"
-                onChange={setState}
-                placeholder="Masukan nomorkk lengkap"
-                labelName="No KK"
-              />
-              <div className="w-full justify flex">
-                <div className="w-1/2 mr-1">
-                  <Select
-                    labelName="Jenis Kelamin"
-                    name="jeniskelamin"
-                    value={jeniskelamin}
-                    fallbackText="Pilih"
-                    onClick={setState}
-                    menuPosition={"fixed"}
-                    className="w-full"
-                  >
-                    <option value="1">Laki - laki</option>
-                    <option value="0">Perempuan</option>
-                  </Select>
-                </div>
-                <div className="w-1/2">
-                  <label
-                    htmlFor={tanggallahir}
-                    className={["block text-sm font-medium text-gray-900"].join(
-                      " "
-                    )}
-                  >
-                    Tanggal Lahir
-                  </label>
-                  <DatePicker
-                    className="focus:outline-none bg-white border w-full px-5 py-2 mt-1 mb-2 shadow-sm sm:text-sm border-gray-300 rounded-md "
-                    selected={tlahir}
-                    onChange={(date) => setTlahirDate(date)}
-                    peekNextMonth
-                    showMonthDropdown
-                    showYearDropdown
-                    dateFormat="yyyy-MM-dd"
-                  />
-                </div>
-              </div>
               <Input
                 value={nohp}
                 // error={ERRORS?.nohp?.message}
                 name="nohp"
+                type="number"
                 onChange={setState}
                 placeholder="No. Hp"
                 labelName="Nomor Handphone"
-              />
-              <Input
-                value={alamat}
-                // error={ERRORS?.alamat?.message}
-                name="alamat"
-                onChange={setState}
-                placeholder="Alamat Lengkap"
-                labelName="Alamat"
               />
 
               <label
@@ -348,13 +306,12 @@ function PendaftaranLamaForm({ history }) {
                     menuPosition={"fixed"}
                     className="w-full"
                   >
-                    <option value="1">JIWA</option>
-                    <option value="2">ANAK</option>
+                    <option value="JIW">Jiwa</option>
                   </Select>
                 </div>
-                <div className="w-1/2">
+                <div className="w-1/3">
                   <Select
-                    labelName="Pilih Pembayaran"
+                    labelName="Pembayaran"
                     name="pembayaran"
                     value={pembayaran}
                     fallbackText="pembayaran"

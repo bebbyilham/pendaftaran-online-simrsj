@@ -10,6 +10,7 @@ export default function Input({
   labelName,
   inputClassName,
   type,
+  readOnly,
 }) {
   return (
     <div className="flex flex-col mb-2">
@@ -37,6 +38,7 @@ export default function Input({
         ].join(" ")}
         value={value}
         placeholder={placeholder ?? "Please change placeholder"}
+        readOnly={readOnly}
       />
       <span className="text-xs text-red-600">{error}</span>
     </div>
@@ -52,4 +54,5 @@ Input.propTypes = {
   labelName: propTypes.string,
   inputClassName: propTypes.string,
   type: propTypes.oneOf(["text", "email", "password", "number"]),
+  readOnly: propTypes.oneOf(["true", "false"]),
 };

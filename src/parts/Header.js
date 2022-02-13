@@ -8,9 +8,10 @@ function Header({ onLight, location }) {
   const linkColor = onLight ? "text-white sm:text-gray-900" : "text-white";
 
   const [toggleMenu, setToggleMenu] = React.useState(false);
-
+  // eslint-disable-next-line
   const linkCTA =
     location.pathname.indexOf("/login") > -1 ? `/register` : `/login`;
+  // eslint-disable-next-line
   const textCTA = location.pathname.indexOf("/login") > -1 ? "Daftar" : "Masuk";
 
   const classNameLogo = onLight
@@ -68,14 +69,14 @@ function Header({ onLight, location }) {
           </Link>
         </li>
 
-        <li className="leading-10">
+        {/* <li className="leading-10">
           <Link
             to={linkCTA}
             className="btn-login bg-green-800 hover:bg-green-900 transition-all duration-200 text-white hover:text-teal-500 text-lg px-6 py-3 my-4 sm:my-0 font-medium ml-6"
           >
             {textCTA}
           </Link>
-        </li>
+        </li> */}
       </ul>
     </header>
   );
