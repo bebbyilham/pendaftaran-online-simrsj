@@ -35,6 +35,7 @@ function PendaftaranLamaForm({ history }) {
       nomr,
       // eslint-disable-next-line
       nik,
+      // eslint-disable-next-line
       nohp,
       pembayaran,
       pembayaranlain,
