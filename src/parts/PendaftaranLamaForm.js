@@ -308,8 +308,10 @@ function PendaftaranLamaForm({ history }) {
 
   const [polis, setPolis] = useState([]);
   const [dokters, setDokters] = useState([]);
+  // eslint-disable-next-line
   const [praktek, setPraktek] = useState(null);
   const [cekjadwal, setJadwal] = useState(false);
+  // eslint-disable-next-line
   const [errorRequest, setErrorRequest] = useState(false);
 
   useEffect(() => {

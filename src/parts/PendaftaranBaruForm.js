@@ -34,9 +34,11 @@ function PendaftaranBaruForm({ history }) {
       nohp,
       alamat,
       pembayaran,
+      // eslint-disable-next-line
       pembayaranlain,
       nokartu,
       tanggallahir,
+      // eslint-disable-next-line
       politujuan,
       tglkunjungan,
     },
