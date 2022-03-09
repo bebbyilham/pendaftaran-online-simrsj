@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 
 import pasien from "constants/api/pasiens";
 
 import bpjs from "constants/api/bpjs";
+import poli from "constants/api/poli";
+import dokter from "constants/api/dokter";
 
 import { ReactComponent as RegisterImages } from "assets/images/daftar-baru.svg";
 
@@ -13,8 +15,8 @@ import useForm from "helpers/hooks/useForm";
 // eslint-disable-next-line
 import fieldErrors from "helpers/fieldErrors";
 
-import Select from "components/Form/Select";
 import Input from "components/Form/Input";
+import Select from "components/Form/Select";
 
 import moment from "moment";
 import DatePicker from "react-datepicker";
@@ -22,6 +24,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import { toast } from "react-toastify";
+import { CheckCircleIcon } from "@heroicons/react/solid";
 // import "react-toastify/dist/ReactToastify.css";
 
 function PendaftaranLamaForm({ history }) {
@@ -37,6 +40,7 @@ function PendaftaranLamaForm({ history }) {
       pembayaranlain,
       nokartu,
       politujuan,
+      dokterpoli,
       tglkunjungan,
     },
     setState,
@@ -49,6 +53,7 @@ function PendaftaranLamaForm({ history }) {
     pembayaranlain: "",
     nokartu: "",
     politujuan: "",
+    dokterpoli: "",
     tglkunjungan: "",
   });
   async function ceknomr(e) {
@@ -58,7 +63,7 @@ function PendaftaranLamaForm({ history }) {
       .then((res) => {
         if ((res.status = "success")) {
           setcekmr(res.status);
-          toast.info("Data Rekam Medis ditemukan !", {
+          toast.info("Data ditemukan", {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
@@ -66,10 +71,12 @@ function PendaftaranLamaForm({ history }) {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
+            icon: () => <CheckCircleIcon className="h-5 w-5 text-blue-500" />,
           });
           // nama(res.status);
           setceknama(res.data.nama_pasien);
           setceknik(res.data.nomor_pengenal);
+          setceknohp(res.data.hp);
         }
 
         console.log(res.status);
@@ -140,6 +147,7 @@ function PendaftaranLamaForm({ history }) {
   const [cekmr, setcekmr] = useState(null);
   const [ceknama, setceknama] = useState(null);
   const [ceknik, setceknik] = useState(null);
+  const [ceknohp, setceknohp] = useState(null);
 
   async function submit(e) {
     e.preventDefault();
@@ -150,21 +158,26 @@ function PendaftaranLamaForm({ history }) {
         nomorkartu: nokartu,
         nik: ceknik,
         nama: ceknama,
-        nohp,
+        nohp: ceknohp,
         kodepoli: politujuan,
+        kodedokter: dokterpoli,
+        // jampraktek: praktek,
         jeniskunjungan: "0",
         tanggalperiksa: moment(startDate).format("YYYY-MM-DD"),
         pembayaran: pembayaran === "bpjs" ? pembayaranlain : pembayaran,
       })
       .then((res) => {
-        console.log(res.status);
-        if (res.status === "success") {
+        // console.log("====================================");
+        // console.log(res.metadata.message);
+        // console.log("====================================");
+        // console.log(res.metadata.code);
+        if (res.metadata.code === 200) {
           history.push("/home");
           toast.success(
             "Pendaftaran Berhasil NO. RM " +
-              res.data.norm +
+              res.response.norm +
               " KODE BOOKING : " +
-              res.data.kodebooking,
+              res.response.kodebooking,
             {
               position: "top-center",
               autoClose: false,
@@ -176,8 +189,19 @@ function PendaftaranLamaForm({ history }) {
             }
           );
         }
-        if (res.status === "Gagal") {
-          toast.error(res.message, {
+        // if (res.status === "Gagal") {
+        //   toast.error(res.message, {
+        //     position: "top-center",
+        //     autoClose: 5000,
+        //     hideProgressBar: false,
+        //     closeOnClick: true,
+        //     pauseOnHover: true,
+        //     draggable: true,
+        //     progress: undefined,
+        //   });
+        // }
+        if (res.metadata.code === 201) {
+          toast.error(res.metadata.message, {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
@@ -210,9 +234,116 @@ function PendaftaranLamaForm({ history }) {
           draggable: true,
           progress: undefined,
         });
-        // seterrors(err?.response?.data?.message);
+        seterrors(err?.response?.data?.message);
       });
   }
+
+  async function cekjadwaldokter(e) {
+    e.preventDefault();
+    // this.setState(prevState => ({
+    //   showButton: !prevState.showButton,
+    //   showButtonName: "SAVING..."
+    // }));
+    // alert("Great Shot!");
+    /** Mocking we updating the API and using the response to update the state */
+    // setTimeout(() => {
+    //   this.setState(prevState => ({
+    //     showData: !prevState.showData,
+    //     showButtonName: "SAVE"
+    //   }));
+    // }, 3000);
+    dokter
+      .cekjadwaldokter({
+        kodepoli: politujuan,
+        tanggalperiksa: moment(startDate).format("YYYY-MM-DD"),
+        // email,
+        // password,
+        // pembayaran: pembayaran === "bpjs" ? pembayaranlain : pembayaran,
+      })
+      .then((res) => {
+        // console.log(res);
+        console.log(res);
+
+        if (res.code === "200") {
+          setJadwal(res.code);
+          setDokters(res.data);
+          setPraktek(res.data);
+          toast.info("Jadwal ditemukan", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+        if (res.metaData) {
+          toast.error(res.metaData.message, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      })
+      .catch((err) => {
+        seterrors(err?.response?.data?.message);
+      });
+  }
+
+  // useEffect(() => {
+  //   async function fetchDokterPoli() {
+  //     const response = await dokter.details();
+  //     console.log("dokter");
+  //     console.log(response.data);
+  //     response.errors ? setErrorRequest(true) : setDokters(response.data);
+  //   }
+
+  //   fetchDokterPoli();
+  // }, []);
+
+  const [polis, setPolis] = useState([]);
+  const [dokters, setDokters] = useState([]);
+  const [praktek, setPraktek] = useState(null);
+  const [cekjadwal, setJadwal] = useState(false);
+  const [errorRequest, setErrorRequest] = useState(false);
+
+  useEffect(() => {
+    async function fetchPoli() {
+      const response = await poli.details();
+      console.log(response.data);
+      response.errors ? setErrorRequest(true) : setPolis(response.data);
+    }
+
+    fetchPoli();
+  }, []);
+
+  // useEffect(() => {
+  //   async function fetchDokterPoli() {
+  //     const response = await dokter.details();
+  //     console.log("dokter");
+  //     console.log(response.data);
+  //     response.errors ? setErrorRequest(true) : setDokters(response.data);
+  //   }
+
+  //   fetchDokterPoli();
+  // }, []);
+
+  // useEffect(() => {
+  //   setUsersPosts([]);
+  //   setComments([]);
+  //   async function fetchPosts() {
+  //     const response = await getUsersPosts(watchUser);
+  //     response.errors ? setErrorRequest(true) : setUsersPosts(response);
+  //   }
+  //   if (watchUser) {
+  //     fetchPosts();
+  //   }
+  // }, [watchUser]);
 
   // const ERRORS = fieldErrors(errors);
 
@@ -238,83 +369,24 @@ function PendaftaranLamaForm({ history }) {
                 labelName="No. Rekam Medis"
               />
             </div>
-            <div className="w-1/4 mt-5 ml-2">
+            <div className="w-1/6 mt-5 ml-2">
               <button
                 onClick={ceknomr}
                 className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-800 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-1 w-full"
               >
-                Cek
+                <CheckCircleIcon className="h-5 w-5 text-white" />
               </button>
             </div>
           </div>
           {(cekmr === "success" && (
             <>
-              <Input
-                value={ceknama}
-                // error={ERRORS?.nama?.message}
-                name="nama"
-                onChange={setState}
-                placeholder="Masukan nama lengkap"
-                labelName="Nama"
-                readOnly={true}
-              />
-              <Input
-                value={ceknik}
-                // error={ERRORS?.nik?.message}
-                name="nik"
-                onChange={setState}
-                placeholder="Masukan nik lengkap"
-                labelName="NIK"
-                readOnly={true}
-              />
-              <Input
-                value={nohp}
-                // error={ERRORS?.nohp?.message}
-                name="nohp"
-                type="number"
-                onChange={setState}
-                placeholder="No. Hp"
-                labelName="Nomor Handphone"
-              />
-
-              <label
-                htmlFor={tglkunjungan}
-                className={["block text-sm font-medium text-gray-900"].join(
-                  " "
-                )}
-              >
-                Tanggal Kunjungan
-              </label>
-              <DatePicker
-                className="focus:outline-none bg-white border w-full px-5 py-2 mt-1 mb-2 shadow-sm sm:text-sm border-gray-300 rounded-md "
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
-                minDate={new Date().setDate(new Date().getDate() + 1)}
-                showDisabledMonthNavigation
-                dropdownMode="select"
-                dateFormat="yyyy-MM-dd"
-                labelName="Tanggal Lahir"
-              />
               <div className="w-full justify flex">
-                <div className="w-1/2 mr-1">
-                  <Select
-                    labelName="Poli Tujuan"
-                    name="politujuan"
-                    value={politujuan}
-                    fallbackText="Pilih poli"
-                    onClick={setState}
-                    menuPosition={"fixed"}
-                    className="w-full"
-                  >
-                    <option value="JIW">Jiwa</option>
-                  </Select>
-                </div>
-                <div className="w-1/3">
+                <div className="w-3/5 mr-1">
                   <Select
                     labelName="Pembayaran"
                     name="pembayaran"
                     value={pembayaran}
-                    fallbackText="pembayaran"
+                    fallbackText="-"
                     onClick={setState}
                     className="w-full"
                   >
@@ -347,6 +419,117 @@ function PendaftaranLamaForm({ history }) {
                   </div>
                 </div>
               )}
+              <Input
+                value={ceknama}
+                // error={ERRORS?.nama?.message}
+                name="nama"
+                onChange={setState}
+                placeholder="Masukan nama lengkap"
+                labelName="Nama"
+                readOnly={true}
+              />
+              <Input
+                value={ceknik}
+                // error={ERRORS?.nik?.message}
+                name="nik"
+                onChange={setState}
+                placeholder="Masukan nik lengkap"
+                labelName="NIK"
+                readOnly={true}
+              />
+              <Input
+                value={ceknohp}
+                // error={ERRORS?.nohp?.message}
+                name="nohp"
+                type="number"
+                onChange={setState}
+                placeholder="No. Hp"
+                labelName="Nomor Handphone"
+              />
+              <div className="w-full justify flex">
+                <div className="w-1/2 mr-2">
+                  <Select
+                    labelName="Poli Tujuan"
+                    name="politujuan"
+                    value={politujuan}
+                    fallbackText="Pilih poli"
+                    onClick={setState}
+                    menuPosition={"auto"}
+                    className="w-1/2"
+                  >
+                    {polis.map((value) => (
+                      <option
+                        className="w-1/2 mr-1"
+                        value={value.kode_ruangan}
+                        key={value.id_ruangan}
+                      >
+                        {value.nama_ruangan}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+                <div className="w-1/3">
+                  <label
+                    htmlFor={tglkunjungan}
+                    className={["block text-sm font-medium text-gray-900"].join(
+                      " "
+                    )}
+                  >
+                    Tanggal Berobat
+                  </label>
+                  <DatePicker
+                    name="tglkunjungan"
+                    className="focus:outline-none bg-white border w-full px-5 py-2 mt-1 mb-2 shadow-sm sm:text-sm border-gray-300 rounded-md "
+                    selected={startDate}
+                    onChange={(date) => setStartDate(date)}
+                    minDate={new Date().setDate(new Date().getDate() + 1)}
+                    showDisabledMonthNavigation
+                    dropdownMode="select"
+                    dateFormat="yyyy-MM-dd"
+                    labelName=""
+                  />
+                </div>
+                <div className="w-1/6 mt-5 ml-2">
+                  <button
+                    onClick={cekjadwaldokter}
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-800 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-1 w-full"
+                  >
+                    <CheckCircleIcon className="h-5 w-5 text-white" />
+                  </button>
+                </div>
+              </div>
+              {cekjadwal === "200" && (
+                <>
+                  <div className="w-full justify flex">
+                    <div className="w-full">
+                      <Select
+                        multiple={true}
+                        labelName="Dokter"
+                        name="dokterpoli"
+                        value={dokterpoli}
+                        fallbackText="Pilih poli"
+                        onClick={setState}
+                        menuPosition={"auto"}
+                        className="w-1/2"
+                      >
+                        {dokters.map((value) => (
+                          <option
+                            className="w-1/2 mr-1"
+                            value={value.dokter_kode}
+                            key={value.dokter_kode}
+                          >
+                            {value.dokter_nama}
+                            {" ("} {value.buka}
+                            {"-"}
+                            {value.tutup} {}
+                            {")"}
+                          </option>
+                        ))}
+                      </Select>
+                    </div>
+                  </div>
+                </>
+              )}
             </>
           )) ||
             cekmr === "error"}
@@ -365,8 +548,8 @@ function PendaftaranLamaForm({ history }) {
         </form>
       </div>
 
-      <div className="w-1/12 hidden sm:block"></div>
-      <div className="w-5/12 hidden sm:block flex justify-end pt-24 pr-0 pl-20">
+      {/* <div className="w-1/12 hidden sm:block"></div> */}
+      <div className="w-5/12 hidden sm:block flex justify-end pt-24 pr-0 pl-40">
         <div className="relative" style={{ width: 369, height: 440 }}>
           <div className="absolute w-full h-full -mb-8 -ml-2">
             <div className="absolute w-full h-full -mb-8 -ml-2">

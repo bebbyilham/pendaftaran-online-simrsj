@@ -39,13 +39,13 @@ export default function Hero() {
         </form> */}
         <Link
           to="/pendaftaranbaru"
-          className="bg-green-800 hover:bg-green-900 transition-all duration-200 focus:outline-none shadow-inner text-white px-4 md:px-6 py-3 whitespace-no-wrap mr-2"
+          className="bg-green-800 hover:bg-green-900 transition-all duration-200 rounded-md focus:outline-none shadow-inner text-white px-4 md:px-6 py-3 whitespace-no-wrap mr-2"
         >
           Pasien Baru
         </Link>
         <Link
           to="/pendaftaranlama"
-          className="bg-green-800 hover:bg-green-900 transition-all duration-200 focus:outline-none shadow-inner text-white px-4 md:px-6 py-3 whitespace-no-wrap"
+          className="bg-green-800 hover:bg-green-900 transition-all duration-200 rounded-md focus:outline-none shadow-inner text-white px-4 md:px-6 py-3 whitespace-no-wrap"
         >
           Pasien Lama
         </Link>

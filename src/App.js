@@ -15,11 +15,12 @@ import Unauthenticated from "pages/401";
 
 //frontpage
 import Frontpage from "pages/Frontpage";
+//syarat ketentuan
+import Syaratketentuan from "pages/Syaratketentuan";
 
 //pendaftaran
 import PendaftaranBaru from "pages/PendaftaranBaru";
 import PendaftaranLama from "pages/PendaftaranLama";
-
 
 //auth
 import Login from "pages/Login";
@@ -55,8 +56,18 @@ function App() {
       <Router history={history}>
         <Switch>
           <GuestRoute path="/home" component={Frontpage}></GuestRoute>
-          <GuestRoute path="/pendaftaranbaru" component={PendaftaranBaru}></GuestRoute>
-          <GuestRoute path="/pendaftaranlama" component={PendaftaranLama}></GuestRoute>
+          <GuestRoute
+            path="/syaratketentuan"
+            component={Syaratketentuan}
+          ></GuestRoute>
+          <GuestRoute
+            path="/pendaftaranbaru"
+            component={PendaftaranBaru}
+          ></GuestRoute>
+          <GuestRoute
+            path="/pendaftaranlama"
+            component={PendaftaranLama}
+          ></GuestRoute>
           <GuestRoute path="/login" component={Login}></GuestRoute>
           <GuestRoute path="/register" component={Register}></GuestRoute>
           <GuestRoute path="/private" component={Unauthenticated}></GuestRoute>

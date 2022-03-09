@@ -21,6 +21,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import { toast } from "react-toastify";
+import moment from "moment";
 // import "react-toastify/dist/ReactToastify.css";
 
 function PendaftaranBaruForm({ history }) {
@@ -121,28 +122,37 @@ function PendaftaranBaruForm({ history }) {
         nik,
         nama,
         jeniskelamin,
-        tanggallahir: tlahir,
+        tanggallahir: moment(tlahir).format("YYYY-MM-DD"),
         nohp,
         alamat,
         nomorkk,
-        pembayaran: pembayaran === "bpjs" ? pembayaranlain : pembayaran,
+        pembayaran,
+        tanggalperiksa: moment(startDate).format("YYYY-MM-DD"),
       })
       .then((res) => {
         // console.log(res.status);
-        if (res.status === "success") {
+        if (res.metadata.code === 200) {
           history.push("/home");
-          toast.success(res.message + " dengan nomor " + res.data.norm, {
-            position: "top-center",
-            autoClose: false,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
+          toast.success(
+            "Pendaftaran Berhasil Kodebooking " +
+              res.response.kodebooking +
+              " dengan No. Rekam Medik " +
+              res.response.norm +
+              " No. Antrean Loket " +
+              res.response.norm,
+            {
+              position: "top-center",
+              autoClose: false,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            }
+          );
         }
-        if (res.status === "Ok") {
-          toast.warning(res.message, {
+        if (res.metadata.code === 201) {
+          toast.warning(res.metadata.message, {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
@@ -206,14 +216,14 @@ function PendaftaranBaruForm({ history }) {
             placeholder="Masukan nik lengkap"
             labelName="NIK"
           />
-          <Input
+          {/* <Input
             value={nomorkk}
             // error={ERRORS?.nomorkk?.message}
             name="nomorkk"
             onChange={setState}
             placeholder="Masukan nomorkk lengkap"
             labelName="No KK"
-          />
+          /> */}
           <div className="w-full justify flex">
             <div className="w-1/2 mr-1">
               <Select
@@ -283,7 +293,7 @@ function PendaftaranBaruForm({ history }) {
             labelName="Tanggal Lahir"
           />
           <div className="w-full justify flex">
-            <div className="w-1/2 mr-1">
+            {/* <div className="w-1/2 mr-1">
               <Select
                 labelName="Poli Tujuan"
                 name="politujuan"
@@ -296,8 +306,8 @@ function PendaftaranBaruForm({ history }) {
                 <option value="1">JIWA</option>
                 <option value="2">ANAK</option>
               </Select>
-            </div>
-            <div className="w-1/2">
+            </div> */}
+            <div className="w-full">
               <Select
                 labelName="Pilih Pembayaran"
                 name="pembayaran"
@@ -306,13 +316,13 @@ function PendaftaranBaruForm({ history }) {
                 onClick={setState}
                 className="w-full"
               >
-                <option value="umum">Umum</option>
-                <option value="bpjs">BPJS</option>
+                <option value="UMUM">Umum</option>
+                <option value="BPJS">BPJS</option>
               </Select>
             </div>
           </div>
 
-          {pembayaran === "bpjs" && (
+          {pembayaran === "BPJS" && (
             <form>
               <div className="w-full justify flex">
                 <div className="w-1/2">

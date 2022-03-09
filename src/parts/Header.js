@@ -57,17 +57,17 @@ function Header({ onLight, location }) {
             Halaman Utama
           </a>
         </li>
-        <li className="leading-10">
+        {/* <li className="leading-10">
           <Link
-            to="/"
+            to="/syaratketentuan"
             className={[
               linkColor,
               "hover:text-green-900 text-lg px-6 py-3 my-4 sm:my-0 font-medium",
             ].join(" ")}
           >
-            Tentang Kami
+            Syarat & Ketentuan
           </Link>
-        </li>
+        </li> */}
 
         {/* <li className="leading-10">
           <Link

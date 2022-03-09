@@ -9,7 +9,6 @@ import { ReactComponent as Circle } from "assets/images/circle.svg";
 import Header from "parts/Header";
 import Hero from "parts/Hero";
 import Partners from "parts/Partners";
-import Syarat from "parts/Syarat";
 // import ListBlogs from "src/parts/ListBlogs";
 // import ListCategories from "src/parts/ListCategories";
 import Footer from "parts/Footer";
@@ -40,7 +39,7 @@ function Home({ data }) {
           <Partners></Partners>
         </section>
         <section className="container px-4 mx-auto md:pt-24">
-          <Syarat></Syarat>
+          {/* <ListBlogs data={data}></ListBlogs> */}
         </section>
         <section className="container px-4 mx-auto md:pt-24">
           {/* <ListCategories></ListCategories> */}
