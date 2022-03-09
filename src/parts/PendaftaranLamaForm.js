@@ -35,7 +35,7 @@ function PendaftaranLamaForm({ history }) {
       nomr,
       // eslint-disable-next-line
       nik,
-      // eslint-disable-next-line
+
       nohp,
       pembayaran,
       pembayaranlain,
@@ -77,7 +77,7 @@ function PendaftaranLamaForm({ history }) {
           // nama(res.status);
           setceknama(res.data.nama_pasien);
           setceknik(res.data.nomor_pengenal);
-          setceknohp(res.data.hp);
+          // setceknohp(res.data.hp);
         }
 
         console.log(res.status);
@@ -148,7 +148,7 @@ function PendaftaranLamaForm({ history }) {
   const [cekmr, setcekmr] = useState(null);
   const [ceknama, setceknama] = useState(null);
   const [ceknik, setceknik] = useState(null);
-  const [ceknohp, setceknohp] = useState(null);
+  // const [ceknohp, setceknohp] = useState(null);
 
   async function submit(e) {
     e.preventDefault();
@@ -159,7 +159,7 @@ function PendaftaranLamaForm({ history }) {
         nomorkartu: nokartu,
         nik: ceknik,
         nama: ceknama,
-        nohp: ceknohp,
+        nohp,
         kodepoli: politujuan,
         kodedokter: dokterpoli,
         // jampraktek: praktek,
@@ -441,7 +441,7 @@ function PendaftaranLamaForm({ history }) {
                 readOnly={true}
               />
               <Input
-                value={ceknohp}
+                value={nohp}
                 // error={ERRORS?.nohp?.message}
                 name="nohp"
                 type="number"
