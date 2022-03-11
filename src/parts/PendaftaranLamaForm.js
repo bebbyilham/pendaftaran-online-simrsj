@@ -80,8 +80,8 @@ function PendaftaranLamaForm({ history }) {
           // setceknohp(res.data.hp);
         }
 
-        console.log(res.status);
-        console.log(res.data.no_mr);
+        // console.log(res.status);
+        // console.log(res.data.no_mr);
       })
       .catch((err) => {
         setcekmr(err?.response?.data?.status);
@@ -112,7 +112,7 @@ function PendaftaranLamaForm({ history }) {
       })
       .then((res) => {
         // console.log(res);
-        console.log(res.metaData);
+        // console.log(res.metaData);
         if (res.peserta) {
           toast.info(res.peserta.statusPeserta.keterangan, {
             position: "top-center",
@@ -225,7 +225,7 @@ function PendaftaranLamaForm({ history }) {
         // });
       })
       .catch((err) => {
-        console.log(err?.response?.data?.message);
+        // console.log(err?.response?.data?.message);
         toast.error("Data belum lengkap !", {
           position: "top-center",
           autoClose: 5000,
@@ -263,7 +263,7 @@ function PendaftaranLamaForm({ history }) {
       })
       .then((res) => {
         // console.log(res);
-        console.log(res);
+        // console.log(res);
 
         if (res.code === "200") {
           setJadwal(res.code);
@@ -318,7 +318,7 @@ function PendaftaranLamaForm({ history }) {
   useEffect(() => {
     async function fetchPoli() {
       const response = await poli.details();
-      console.log(response.data);
+      // console.log(response.data);
       response.errors ? setErrorRequest(true) : setPolis(response.data);
     }
 

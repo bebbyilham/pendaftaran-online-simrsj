@@ -81,7 +81,7 @@ function PendaftaranBaruForm({ history }) {
       })
       .then((res) => {
         // console.log(res);
-        console.log(res.metaData);
+        // console.log(res.metaData);
         if (res.peserta) {
           toast.info(res.peserta.statusPeserta.keterangan, {
             position: "top-center",
@@ -141,7 +141,7 @@ function PendaftaranBaruForm({ history }) {
               " dengan No. Rekam Medik " +
               res.response.norm +
               " No. Antrean Loket " +
-              res.response.norm,
+              res.response.nomorantrean,
             {
               position: "top-center",
               autoClose: false,
@@ -176,7 +176,7 @@ function PendaftaranBaruForm({ history }) {
         // });
       })
       .catch((err) => {
-        console.log(err?.response?.data?.message);
+        // console.log(err?.response?.data?.message);
         toast.error("Data belum lengkap !", {
           position: "top-center",
           autoClose: 5000,
