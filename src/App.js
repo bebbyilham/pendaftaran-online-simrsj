@@ -68,16 +68,7 @@ function App() {
             path="/pendaftaranlama"
             component={PendaftaranLama}
           ></GuestRoute>
-          <GuestRoute path="/login" component={Login}></GuestRoute>
-          <GuestRoute path="/register" component={Register}></GuestRoute>
-          <GuestRoute path="/private" component={Unauthenticated}></GuestRoute>
-          <NurseRoute exact path="/" component={MyData}></NurseRoute>
-          <NurseRoute exact path="/settings" component={Settings}></NurseRoute>
-          <NurseRoute
-            exact
-            path="/personalidentity"
-            component={PersonalIdentity}
-          ></NurseRoute>
+
           <Route path="*" component={NotFound}></Route>
         </Switch>
       </Router>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createRef } from "react";
 import { withRouter } from "react-router-dom";
 
 import pasien from "constants/api/pasiens";
@@ -25,6 +25,8 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import { toast } from "react-toastify";
 import { CheckCircleIcon } from "@heroicons/react/solid";
+import { exportComponentAsPNG } from "react-component-export-image";
+import { useScreenshot, createFileName } from "use-react-screenshot";
 // import "react-toastify/dist/ReactToastify.css";
 
 function PendaftaranLamaForm({ history }) {
@@ -148,6 +150,7 @@ function PendaftaranLamaForm({ history }) {
   const [cekmr, setcekmr] = useState(null);
   const [ceknama, setceknama] = useState(null);
   const [ceknik, setceknik] = useState(null);
+  const [berhasil, setberhasil] = useState(null);
   // const [ceknohp, setceknohp] = useState(null);
 
   async function submit(e) {
@@ -173,7 +176,18 @@ function PendaftaranLamaForm({ history }) {
         // console.log("====================================");
         // console.log(res.metadata.code);
         if (res.metadata.code === 200) {
-          history.push("/home");
+          setberhasil(res.metadata.code);
+          setnoantrean(res.response.nomorantrean);
+          setnomorrm(res.response.norm);
+          setnampasien(res.response.namapasien);
+          setkodebooking(res.response.kodebooking);
+          setnampoli(res.response.namapoli);
+          setketerangan(res.response.keterangan);
+          settglregistrasi(res.response.tglregistrasi);
+          settglperiksa(res.response.tanggalperiksa);
+          // console.log("====================================");
+          // console.log(res.metadata.code);
+          // console.log("====================================");
           toast.success(
             "Pendaftaran Berhasil NO. RM " +
               res.response.norm +
@@ -325,6 +339,23 @@ function PendaftaranLamaForm({ history }) {
     fetchPoli();
   }, []);
 
+  const [noantrean, setnoantrean] = useState(null);
+  const [kodebooking, setkodebooking] = useState(null);
+  const [nomorrm, setnomorrm] = useState(null);
+  const [nampasien, setnampasien] = useState(null);
+  const [nampoli, setnampoli] = useState(null);
+  const [keterangan, setketerangan] = useState(null);
+  const [tglregistrasi, settglregistrasi] = useState(null);
+  const [tglperiksa, settglperiksa] = useState(null);
+
+  // setnoantrean(res.response.nomorantrean);
+  // setnomorrm(res.response.norm);
+  // setkodebooking(res.response.kodebooking);
+  // setnampoli(res.response.nama);
+  // setketerangan(res.response.keterangan);
+  // settglregistrasi(res.response.tglregistrasi);
+  // settglperiksa(res.response.tanggalperiksa);
+
   // useEffect(() => {
   //   async function fetchDokterPoli() {
   //     const response = await dokter.details();
@@ -350,9 +381,24 @@ function PendaftaranLamaForm({ history }) {
 
   // const ERRORS = fieldErrors(errors);
 
+  const ref = createRef(null);
+  const [image, takeScreenShot] = useScreenshot({
+    type: "image/jpeg",
+    quality: 1.0,
+  });
+
+  const download = (image, { name = "img", extension = "jpg" } = {}) => {
+    const a = document.createElement("a");
+    a.href = image;
+    a.download = createFileName(extension, name);
+    a.click();
+  };
+
+  const downloadScreenshot = () => takeScreenShot(ref.current).then(download);
+
   return (
     <div className="flex justify-center items-center pb-24">
-      <div className="w-full sm:w-3/12">
+      <div className="w-full sm:w-3/12 xs:w-3/12 p-4">
         <h1 className="text-4xl text-blue-500 mb-6">
           <span className="font-bold">Pendaftaran </span>
           Rawat Jalan
@@ -377,7 +423,7 @@ function PendaftaranLamaForm({ history }) {
                 onClick={ceknomr}
                 className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-800 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-1 w-full"
               >
-                <CheckCircleIcon className="h-5 w-5 text-white" />
+                <CheckCircleIcon className="h-5 w-5 text-white mx-auto" />
               </button>
             </div>
           </div>
@@ -486,6 +532,7 @@ function PendaftaranLamaForm({ history }) {
                     selected={startDate}
                     onChange={(date) => setStartDate(date)}
                     minDate={new Date().setDate(new Date().getDate() + 1)}
+                    maxDate={new Date().setDate(new Date().getDate() + 7)}
                     showDisabledMonthNavigation
                     dropdownMode="select"
                     dateFormat="yyyy-MM-dd"
@@ -550,17 +597,92 @@ function PendaftaranLamaForm({ history }) {
           </button>
         </form>
       </div>
+      {(berhasil === 200 && (
+        <>
+          <div className="w-full sm:w-3/12 xs:w-3/12 p-4">
+            <div>
+              <div
+                ref={ref}
+                className="bg-white p-8 rounded-xl shadow-lg shadow-neutral-200 w-96"
+              >
+                <div className="flex justify-between mb-4">
+                  <div>
+                    <p className="text-lg font-semibold text-neutral-700">
+                      {nampasien}
+                    </p>
+                    <p className="mt-0.5  text-neutral-400 text-sm">
+                      {nomorrm}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-lg font-semibold text-neutral-700">
+                      {kodebooking}
+                    </p>
+                    <p className="mt-0.5  text-neutral-400 text-sm">
+                      {tglregistrasi}
+                    </p>
+                  </div>
+                </div>
 
-      {/* <div className="w-1/12 hidden sm:block"></div> */}
-      <div className="w-5/12 hidden sm:block flex justify-end pt-24 pr-0 pl-40">
-        <div className="relative" style={{ width: 369, height: 440 }}>
-          <div className="absolute w-full h-full -mb-8 -ml-2">
-            <div className="absolute w-full h-full -mb-8 -ml-2">
-              <RegisterImages></RegisterImages>
+                <span className="text-green-500 px-3 text-sm py-1.5 bg-green-100 rounded-lg font-semibold">
+                  Bukti Pendaftaran Online
+                </span>
+
+                <div className="flex items-center justify-between mt-5">
+                  <div className="flex items-center">
+                    <span className="text-neutral-400 text-md">
+                      Nomor Antrean
+                    </span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="font-extrabold text-neutral-400 text-lg">
+                      {noantrean}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mt-5 border-t border-dashed space-y-4 py-4">
+                  <div className="flex justify-between group duration-150 cursor-pointer">
+                    <div>
+                      <p className="text-lg text-neutral-600">
+                        Tanggal Periksa
+                      </p>
+                    </div>
+                    <span className="text-lg text-neutral-600">
+                      {tglperiksa}
+                    </span>
+                  </div>
+                  <div className="flex justify-between group duration-150 cursor-pointer">
+                    <div>
+                      <p className="text-lg text-neutral-600">Poli</p>
+                    </div>
+                    <span className="text-lg text-neutral-600">{nampoli}</span>
+                  </div>
+                </div>
+                <div className="text-center text-neutral-400 font-semibold rounded-lg mt-3">
+                  {"*"}
+                  {keterangan}
+                </div>
+              </div>
+            </div>
+            <div className="w-5/6 ml-10 items-end">
+              <div className="hidden sm:block" aria-hidden="true">
+                <div className="py-5">
+                  <div className="border-t border-gray-200" />
+                </div>
+              </div>
+              <button
+                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-800 hover:bg-green-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 mt-1 w-full"
+                onClick={downloadScreenshot}
+              >
+                Download Bukti Pendaftaran
+              </button>
             </div>
           </div>
-        </div>
-      </div>
+        </>
+      )) ||
+        berhasil === "error"}
+      {/* <div className="w-1/12 hidden sm:block"></div> */}
     </div>
   );
 }
