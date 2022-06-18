@@ -7,7 +7,7 @@ import bpjs from "constants/api/bpjs";
 import poli from "constants/api/poli";
 import dokter from "constants/api/dokter";
 
-import { ReactComponent as RegisterImages } from "assets/images/daftar-baru.svg";
+// import { ReactComponent as RegisterImages } from "assets/images/daftar-baru.svg";
 
 // eslint-disable-next-line
 import { useSelector } from "react-redux";
@@ -25,7 +25,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import { toast } from "react-toastify";
 import { CheckCircleIcon } from "@heroicons/react/solid";
-import { exportComponentAsPNG } from "react-component-export-image";
+// import { exportComponentAsPNG } from "react-component-export-image";
 import { useScreenshot, createFileName } from "use-react-screenshot";
 // import "react-toastify/dist/ReactToastify.css";
 
@@ -86,31 +86,25 @@ function PendaftaranLamaForm({ history }) {
         // console.log(res.data.no_mr);
       })
       .catch((err) => {
-        setcekmr(err?.response?.data?.status);
+        toast.error("Server sibuk, coba lagi !", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         seterrors(err?.response?.data?.message);
       });
   }
-  // const BPJS = useSelector((state) => state.bpjs);
+
   async function cekpeserta(e) {
     e.preventDefault();
-    // this.setState(prevState => ({
-    //   showButton: !prevState.showButton,
-    //   showButtonName: "SAVING..."
-    // }));
-    // alert("Great Shot!");
-    /** Mocking we updating the API and using the response to update the state */
-    // setTimeout(() => {
-    //   this.setState(prevState => ({
-    //     showData: !prevState.showData,
-    //     showButtonName: "SAVE"
-    //   }));
-    // }, 3000);
+
     bpjs
       .cekpeserta({
         nokartu,
-        // email,
-        // password,
-        // pembayaran: pembayaran === "bpjs" ? pembayaranlain : pembayaran,
       })
       .then((res) => {
         // console.log(res);
@@ -139,6 +133,16 @@ function PendaftaranLamaForm({ history }) {
         }
       })
       .catch((err) => {
+        // console.log(err?.response?.data?.message);
+        toast.error("Server sibuk, coba lagi !", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         seterrors(err?.response?.data?.message);
       });
   }
@@ -173,8 +177,8 @@ function PendaftaranLamaForm({ history }) {
       .then((res) => {
         // console.log("====================================");
         // console.log(res.metadata.message);
-        // console.log("====================================");
-        // console.log(res.metadata.code);
+        console.log("====================================");
+        console.log(res.metadata.code);
         if (res.metadata.code === 200) {
           setberhasil(res.metadata.code);
           setnoantrean(res.response.nomorantrean);
@@ -203,19 +207,7 @@ function PendaftaranLamaForm({ history }) {
               progress: undefined,
             }
           );
-        }
-        // if (res.status === "Gagal") {
-        //   toast.error(res.message, {
-        //     position: "top-center",
-        //     autoClose: 5000,
-        //     hideProgressBar: false,
-        //     closeOnClick: true,
-        //     pauseOnHover: true,
-        //     draggable: true,
-        //     progress: undefined,
-        //   });
-        // }
-        if (res.metadata.code === 201) {
+        } else if (res.metadata.code === 201) {
           toast.error(res.metadata.message, {
             position: "top-center",
             autoClose: 5000,
@@ -255,28 +247,13 @@ function PendaftaranLamaForm({ history }) {
 
   async function cekjadwaldokter(e) {
     e.preventDefault();
-    // this.setState(prevState => ({
-    //   showButton: !prevState.showButton,
-    //   showButtonName: "SAVING..."
-    // }));
-    // alert("Great Shot!");
-    /** Mocking we updating the API and using the response to update the state */
-    // setTimeout(() => {
-    //   this.setState(prevState => ({
-    //     showData: !prevState.showData,
-    //     showButtonName: "SAVE"
-    //   }));
-    // }, 3000);
+
     dokter
       .cekjadwaldokter({
         kodepoli: politujuan,
         tanggalperiksa: moment(startDate).format("YYYY-MM-DD"),
-        // email,
-        // password,
-        // pembayaran: pembayaran === "bpjs" ? pembayaranlain : pembayaran,
       })
       .then((res) => {
-        // console.log(res);
         // console.log(res);
 
         if (res.code === "200") {
@@ -306,20 +283,19 @@ function PendaftaranLamaForm({ history }) {
         }
       })
       .catch((err) => {
+        // console.log(err?.response?.data?.message);
+        toast.error("Data belum lengkap !", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         seterrors(err?.response?.data?.message);
       });
   }
-
-  // useEffect(() => {
-  //   async function fetchDokterPoli() {
-  //     const response = await dokter.details();
-  //     console.log("dokter");
-  //     console.log(response.data);
-  //     response.errors ? setErrorRequest(true) : setDokters(response.data);
-  //   }
-
-  //   fetchDokterPoli();
-  // }, []);
 
   const [polis, setPolis] = useState([]);
   const [dokters, setDokters] = useState([]);
@@ -331,11 +307,29 @@ function PendaftaranLamaForm({ history }) {
 
   useEffect(() => {
     async function fetchPoli() {
-      const response = await poli.details();
-      // console.log(response.data);
-      response.errors ? setErrorRequest(true) : setPolis(response.data);
-    }
+      // const response = await poli.details();
+      // // console.log(response.data);
+      // response.errors ? setErrorRequest(true) : setPolis(response.data);
+      poli
+        .details()
+        .then((res) => {
+          // console.log(res);
 
+          setPolis(res.data);
+        })
+        .catch((err) => {
+          toast.error("Server sibuk, coba lagi !", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          seterrors(err?.response?.data?.message);
+        });
+    }
     fetchPoli();
   }, []);
 
@@ -348,40 +342,10 @@ function PendaftaranLamaForm({ history }) {
   const [tglregistrasi, settglregistrasi] = useState(null);
   const [tglperiksa, settglperiksa] = useState(null);
 
-  // setnoantrean(res.response.nomorantrean);
-  // setnomorrm(res.response.norm);
-  // setkodebooking(res.response.kodebooking);
-  // setnampoli(res.response.nama);
-  // setketerangan(res.response.keterangan);
-  // settglregistrasi(res.response.tglregistrasi);
-  // settglperiksa(res.response.tanggalperiksa);
-
-  // useEffect(() => {
-  //   async function fetchDokterPoli() {
-  //     const response = await dokter.details();
-  //     console.log("dokter");
-  //     console.log(response.data);
-  //     response.errors ? setErrorRequest(true) : setDokters(response.data);
-  //   }
-
-  //   fetchDokterPoli();
-  // }, []);
-
-  // useEffect(() => {
-  //   setUsersPosts([]);
-  //   setComments([]);
-  //   async function fetchPosts() {
-  //     const response = await getUsersPosts(watchUser);
-  //     response.errors ? setErrorRequest(true) : setUsersPosts(response);
-  //   }
-  //   if (watchUser) {
-  //     fetchPosts();
-  //   }
-  // }, [watchUser]);
-
   // const ERRORS = fieldErrors(errors);
 
   const ref = createRef(null);
+  // eslint-disable-next-line
   const [image, takeScreenShot] = useScreenshot({
     type: "image/jpeg",
     quality: 1.0,
@@ -397,7 +361,7 @@ function PendaftaranLamaForm({ history }) {
   const downloadScreenshot = () => takeScreenShot(ref.current).then(download);
 
   return (
-    <div className="flex justify-center items-center pb-24">
+    <div className="flex justify-center items-centerpb-24">
       <div className="w-full sm:w-3/12 xs:w-3/12 p-4">
         <h1 className="text-4xl text-blue-500 mb-6">
           <span className="font-bold">Pendaftaran </span>
@@ -531,7 +495,7 @@ function PendaftaranLamaForm({ history }) {
                     className="focus:outline-none bg-white border w-full px-5 py-2 mt-1 mb-2 shadow-sm sm:text-sm border-gray-300 rounded-md "
                     selected={startDate}
                     onChange={(date) => setStartDate(date)}
-                    minDate={new Date().setDate(new Date().getDate() + 1)}
+                    minDate={new Date().setDate(new Date().getDate() + 3)}
                     maxDate={new Date().setDate(new Date().getDate() + 7)}
                     showDisabledMonthNavigation
                     dropdownMode="select"
@@ -599,13 +563,10 @@ function PendaftaranLamaForm({ history }) {
       </div>
       {(berhasil === 200 && (
         <>
-          <div className="w-full sm:w-3/12 xs:w-3/12 p-4">
-            <div>
-              <div
-                ref={ref}
-                className="bg-white p-8 rounded-xl shadow-lg shadow-neutral-200 w-96"
-              >
-                <div className="flex justify-between mb-4">
+          <div className="w-full sm:w-3/12 xs:w-full p-4">
+            <div ref={ref}>
+              <div className="bg-white p-8 rounded-xl shadow-lg shadow-neutral-200 w-full">
+                {/* <div className="flex justify-between mb-4">
                   <div>
                     <p className="text-lg font-semibold text-neutral-700">
                       {nampasien}
@@ -622,12 +583,46 @@ function PendaftaranLamaForm({ history }) {
                       {tglregistrasi}
                     </p>
                   </div>
+                </div> */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <span className="text-lg font-semibold text-neutral-700">
+                      {nampasien}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between mt-0.5">
+                  <div className="flex items-center">
+                    <span className="text-sm font-normal text-neutral-700">
+                      {nomorrm}
+                    </span>
+                  </div>
+                  <div className="flex items-center ">
+                    <p className="font-normal text-neutral-400 text-sm">
+                      {tglregistrasi}
+                    </p>
+                    {/* <p className="mt-0.5  text-neutral-400 text-sm">
+                      {tglregistrasi}
+                    </p> */}
+                  </div>
                 </div>
 
-                <span className="text-green-500 px-3 text-sm py-1.5 bg-green-100 rounded-lg font-semibold">
-                  Bukti Pendaftaran Online
+                <span className="text-green-500 text-sm mt-2 font-extrabold">
+                  ✓ Bukti Pendaftaran Online
                 </span>
 
+                <div className="flex items-center justify-between mt-5">
+                  <div className="flex items-center">
+                    <span className="text-neutral-400 text-md">
+                      Kode Booking
+                    </span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="font-extrabold text-neutral-400 text-lg">
+                      {kodebooking}
+                    </span>
+                  </div>
+                </div>
                 <div className="flex items-center justify-between mt-5">
                   <div className="flex items-center">
                     <span className="text-neutral-400 text-md">
@@ -644,19 +639,19 @@ function PendaftaranLamaForm({ history }) {
                 <div className="mt-5 border-t border-dashed space-y-4 py-4">
                   <div className="flex justify-between group duration-150 cursor-pointer">
                     <div>
-                      <p className="text-lg text-neutral-600">
+                      <p className="text-md text-neutral-600">
                         Tanggal Periksa
                       </p>
                     </div>
-                    <span className="text-lg text-neutral-600">
+                    <span className="text-md text-neutral-600">
                       {tglperiksa}
                     </span>
                   </div>
                   <div className="flex justify-between group duration-150 cursor-pointer">
                     <div>
-                      <p className="text-lg text-neutral-600">Poli</p>
+                      <p className="text-md text-neutral-600">Poli</p>
                     </div>
-                    <span className="text-lg text-neutral-600">{nampoli}</span>
+                    <span className="text-md text-neutral-600">{nampoli}</span>
                   </div>
                 </div>
                 <div className="text-center text-neutral-400 font-semibold rounded-lg mt-3">
@@ -681,8 +676,7 @@ function PendaftaranLamaForm({ history }) {
           </div>
         </>
       )) ||
-        berhasil === "error"}
-      {/* <div className="w-1/12 hidden sm:block"></div> */}
+        berhasil !== 200}
     </div>
   );
 }

@@ -15,7 +15,7 @@ export default function Notfound() {
       </p>
       <Link
         className="btn-login bg-green-800 hover:bg-green-900 transition-all duration-200 focus:outline-none shadow-inner text-white px-6 py-3"
-        to="/"
+        to="/home"
       >
         Kembali ke halaman utama
       </Link>

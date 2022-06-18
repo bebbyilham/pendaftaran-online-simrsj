@@ -6,12 +6,9 @@ import { useDispatch } from "react-redux";
 
 import "assets/css/style.css";
 
-import NurseRoute from "components/Routes/NurseRoute";
 import GuestRoute from "components/Routes/GuestRoute";
 
 import NotFound from "pages/404";
-
-import Unauthenticated from "pages/401";
 
 //frontpage
 import Frontpage from "pages/Frontpage";
@@ -21,14 +18,6 @@ import Syaratketentuan from "pages/Syaratketentuan";
 //pendaftaran
 import PendaftaranBaru from "pages/PendaftaranBaru";
 import PendaftaranLama from "pages/PendaftaranLama";
-
-//auth
-import Login from "pages/Login";
-import Register from "pages/Register";
-
-import MyData from "pages/MyData";
-import Settings from "pages/Settings";
-import PersonalIdentity from "pages/PersonalIdentity";
 
 import { setAuthorizationHeader } from "configs/axios";
 
