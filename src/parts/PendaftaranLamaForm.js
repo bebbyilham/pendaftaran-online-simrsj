@@ -613,24 +613,24 @@ function PendaftaranLamaForm({ history }) {
 
                 <div className="flex items-center justify-between mt-5">
                   <div className="flex items-center">
-                    <span className="text-neutral-400 text-md">
+                    <span className="text-neutral-400 text-md sm:text-xs">
                       Kode Booking
                     </span>
                   </div>
                   <div className="flex items-center">
-                    <span className="font-extrabold text-neutral-400 text-lg">
+                    <span className="font-extrabold text-neutral-400 text-lg sm:text-sm">
                       {kodebooking}
                     </span>
                   </div>
                 </div>
                 <div className="flex items-center justify-between mt-5">
                   <div className="flex items-center">
-                    <span className="text-neutral-400 text-md">
+                    <span className="text-neutral-400 text-md sm:text-xs">
                       Nomor Antrean
                     </span>
                   </div>
                   <div className="flex items-center">
-                    <span className="font-extrabold text-neutral-400 text-lg">
+                    <span className="font-extrabold text-neutral-400 text-lg sm:text-sm">
                       {noantrean}
                     </span>
                   </div>
@@ -639,19 +639,23 @@ function PendaftaranLamaForm({ history }) {
                 <div className="mt-5 border-t border-dashed space-y-4 py-4">
                   <div className="flex justify-between group duration-150 cursor-pointer">
                     <div>
-                      <p className="text-md text-neutral-600">
+                      <p className="text-md text-neutral-600 sm:text-xs">
                         Tanggal Periksa
                       </p>
                     </div>
-                    <span className="text-md text-neutral-600">
+                    <span className="text-md text-neutral-600 sm:text-xs">
                       {tglperiksa}
                     </span>
                   </div>
                   <div className="flex justify-between group duration-150 cursor-pointer">
                     <div>
-                      <p className="text-md text-neutral-600">Poli</p>
+                      <p className="text-md text-neutral-600 sm:text-xs">
+                        Poli
+                      </p>
                     </div>
-                    <span className="text-md text-neutral-600">{nampoli}</span>
+                    <span className="text-md text-neutral-600 sm:text-xs">
+                      {nampoli}
+                    </span>
                   </div>
                 </div>
                 <div className="text-center text-neutral-400 font-semibold rounded-lg mt-3">
