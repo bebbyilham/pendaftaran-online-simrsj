@@ -488,7 +488,7 @@ function PendaftaranLamaForm({ history }) {
                       " "
                     )}
                   >
-                    Tanggal Berobat
+                    Tanggal Kunjungan
                   </label>
                   <DatePicker
                     name="tglkunjungan"
@@ -640,7 +640,7 @@ function PendaftaranLamaForm({ history }) {
                   <div className="flex justify-between group duration-150 cursor-pointer">
                     <div>
                       <p className="text-md text-neutral-600 sm:text-xs">
-                        Tanggal Periksa
+                        Tanggal Kunjungan
                       </p>
                     </div>
                     <span className="text-md text-neutral-600 sm:text-xs">
@@ -658,9 +658,13 @@ function PendaftaranLamaForm({ history }) {
                     </span>
                   </div>
                 </div>
-                <div className="text-center text-neutral-400 font-semibold rounded-lg mt-3">
+                <div className="text-center text-xs font-semibold rounded-lg mt-3">
                   {"*"}
                   {keterangan}
+                </div>
+                <div className="mt-2 border-t border-dashed"></div>
+                <div className="text-center text-neutral-400 font-semibold rounded-lg mt-3">
+                  {"RS Jiwa Prof HB Saanin Padang"}
                 </div>
               </div>
             </div>
