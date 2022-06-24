@@ -10,7 +10,7 @@ export default function Hero() {
   // function submit() {
   //   window.open(
   //     `${process.env.NEXT_PUBLIC_NURSEPAGE_URL}/register?email=${state}`
-  //   );
+  //   );timvwr
   // }
   return (
     <div className="flex justify-between items-center">
@@ -38,16 +38,16 @@ export default function Hero() {
           </button>
         </form> */}
         <Link
-          to="/pendaftaranbaru"
+          to="/pendaftaranlama"
           className="bg-green-800 hover:bg-green-900 transition-all duration-200 rounded-md focus:outline-none shadow-inner text-white px-4 md:px-6 py-3 whitespace-no-wrap mr-2"
         >
-          Pasien Baru
+          Pasien Mandiri
         </Link>
         <Link
-          to="/pendaftaranlama"
+          to="/pendaftaranlamabpjs"
           className="bg-green-800 hover:bg-green-900 transition-all duration-200 rounded-md focus:outline-none shadow-inner text-white px-4 md:px-6 py-3 whitespace-no-wrap"
         >
-          Pasien Lama
+          Pasien BPJS
         </Link>
       </div>
       <div className="hidden w-1/2 md:flex justify-end pt-24 ">

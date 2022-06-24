@@ -24,7 +24,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import { toast } from "react-toastify";
-import { CheckCircleIcon } from "@heroicons/react/solid";
+import { CheckCircleIcon, SearchCircleIcon } from "@heroicons/react/solid";
 // import { exportComponentAsPNG } from "react-component-export-image";
 import { useScreenshot, createFileName } from "use-react-screenshot";
 // import "react-toastify/dist/ReactToastify.css";
@@ -100,7 +100,7 @@ function PendaftaranLamaForm({ history }) {
         seterrors(err?.response?.data?.message);
       });
   }
-  // eslint-disable-next-line
+
   async function cekpeserta(e) {
     e.preventDefault();
 
@@ -161,46 +161,26 @@ function PendaftaranLamaForm({ history }) {
 
   async function submit(e) {
     e.preventDefault();
-
-    pasien
-      .pasienlama({
-        norm: nomr,
-        nomorkartu: nokartu,
-        nik: ceknik,
-        nama: ceknama,
-        nohp,
-        kodepoli: politujuan,
-        kodedokter: dokterpoli,
-        // jampraktek: praktek,
-        jeniskunjungan: "0",
-        tanggalperiksa: moment(startDate).format("YYYY-MM-DD"),
-        pembayaran: "umum",
-        // pembayaran: pembayaran === "bpjs" ? pembayaranlain : pembayaran,
-      })
-      .then((res) => {
-        // console.log("====================================");
-        // console.log(res.metadata.message);
-        // console.log("====================================");
-        // console.log(res.metadata.code);
-        if (res.metadata.code === 200) {
-          setberhasil(res.metadata.code);
-          setnoantrean(res.response.nomorantrean);
-          setnomorrm(res.response.norm);
-          setnampasien(res.response.namapasien);
-          setkodebooking(res.response.kodebooking);
-          setnampoli(res.response.namapoli);
-          setketerangan(res.response.keterangan);
-          settglregistrasi(res.response.tglregistrasi);
-          settglperiksa(res.response.tanggalperiksa);
-          // console.log("====================================");
-          // console.log(res.metadata.code);
-          // console.log("====================================");
-          toast.success(
-            "Pendaftaran Berhasil NO. RM " +
-              res.response.norm +
-              " KODE BOOKING : " +
-              res.response.kodebooking,
-            {
+    if (nokartu === "") {
+      toast.error("No. Kartu Tidak Boleh Kosong !", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } else {
+      bpjs
+        .cekpeserta({
+          nokartu,
+        })
+        .then((res) => {
+          // console.log(res);
+          // console.log(res.metaData);
+          if (res.peserta) {
+            toast.info(res.peserta.statusPeserta.keterangan, {
               position: "top-center",
               autoClose: false,
               hideProgressBar: false,
@@ -208,10 +188,95 @@ function PendaftaranLamaForm({ history }) {
               pauseOnHover: true,
               draggable: true,
               progress: undefined,
-            }
-          );
-        } else if (res.metadata.code === 201) {
-          toast.error(res.metadata.message, {
+            });
+          }
+          if (res.metaData) {
+            toast.error(res.metaData.message, {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          }
+        })
+        .then((res) =>
+          pasien.pasienlama({
+            norm: nomr,
+            nomorkartu: nokartu,
+            nik: ceknik,
+            nama: ceknama,
+            nohp,
+            kodepoli: politujuan,
+            kodedokter: dokterpoli,
+            // jampraktek: praktek,
+            jeniskunjungan: "0",
+            tanggalperiksa: moment(startDate).format("YYYY-MM-DD"),
+            pembayaran: "bpjs",
+          })
+        )
+        .then((res) => {
+          // console.log("====================================");
+          // console.log(res.metadata.message);
+          // console.log("====================================");
+          // console.log(res.metadata.code);
+          if (res.metadata.code === 200) {
+            setberhasil(res.metadata.code);
+            setnoantrean(res.response.nomorantrean);
+            setnomorrm(res.response.norm);
+            setnampasien(res.response.namapasien);
+            setkodebooking(res.response.kodebooking);
+            setnampoli(res.response.namapoli);
+            setketerangan(res.response.keterangan);
+            settglregistrasi(res.response.tglregistrasi);
+            settglperiksa(res.response.tanggalperiksa);
+            // console.log("====================================");
+            // console.log(res.metadata.code);
+            // console.log("====================================");
+            toast.success(
+              "Pendaftaran Berhasil NO. RM " +
+                res.response.norm +
+                " KODE BOOKING : " +
+                res.response.kodebooking,
+              {
+                position: "top-center",
+                autoClose: false,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              }
+            );
+          }
+          if (res.metadata.code === 201) {
+            toast.error(res.metadata.message, {
+              position: "top-center",
+              autoClose: false,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          }
+
+          // history.push("/home");
+          // toast.success(res.message, {
+          //   position: "top-center",
+          //   autoClose: false,
+          //   hideProgressBar: false,
+          //   closeOnClick: true,
+          //   pauseOnHover: true,
+          //   draggable: true,
+          //   progress: undefined,
+          // });
+        })
+        .catch((err) => {
+          // console.log(err?.response?.data?.message);
+          toast.error("Data belum lengkap !", {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
@@ -220,32 +285,9 @@ function PendaftaranLamaForm({ history }) {
             draggable: true,
             progress: undefined,
           });
-        }
-
-        // history.push("/home");
-        // toast.success(res.message, {
-        //   position: "top-center",
-        //   autoClose: false,
-        //   hideProgressBar: false,
-        //   closeOnClick: true,
-        //   pauseOnHover: true,
-        //   draggable: true,
-        //   progress: undefined,
-        // });
-      })
-      .catch((err) => {
-        // console.log(err?.response?.data?.message);
-        toast.error("Data belum lengkap !", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
+          seterrors(err?.response?.data?.message);
         });
-        seterrors(err?.response?.data?.message);
-      });
+    }
   }
 
   async function cekjadwaldokter(e) {
@@ -396,23 +438,7 @@ function PendaftaranLamaForm({ history }) {
           </div>
           {(cekmr === "success" && (
             <>
-              {/* <div className="w-full justify flex">
-                <div className="w-3/5 mr-1">
-                  <Select
-                    labelName="Pembayaran"
-                    name="pembayaran"
-                    value={pembayaran}
-                    fallbackText="-"
-                    onClick={setState}
-                    className="w-full"
-                  >
-                    <option value="umum">Umum</option>
-                    <option value="bpjs">BPJS</option>
-                  </Select>
-                </div>
-              </div> */}
-
-              {/* <div className="w-full justify flex">
+              <div className="w-full justify flex">
                 <div className="w-1/2">
                   <Input
                     value={nokartu}
@@ -424,15 +450,15 @@ function PendaftaranLamaForm({ history }) {
                     labelName="Nomor Kartu"
                   />
                 </div>
-                <div className="w-1/4 mt-5 ml-2">
+                <div className="w-1/6 mt-5 ml-2">
                   <button
                     onClick={cekpeserta}
                     className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-800 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-1 w-full"
                   >
-                    Cek
+                    <SearchCircleIcon className="h-5 w-5 text-white mx-auto" />
                   </button>
                 </div>
-              </div> */}
+              </div>
 
               <Input
                 value={ceknama}

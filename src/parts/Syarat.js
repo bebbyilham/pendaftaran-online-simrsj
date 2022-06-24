@@ -26,7 +26,29 @@ export default function Partners() {
                 tanggal rencana kunjungan.
               </dt> */}
               <dd className="mt-1 text-lg text-gray-900 sm:mt-0 sm:col-span-2">
+                <b>
+                  * Untuk Pasien baru silahkan mendaftar ke loket pendaftaran
+                  (on site)
+                </b>
+              </dd>
+            </div>
+            <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              {/* <dt className="text-sm font-medium text-gray-500">
                 Pendaftaran Online hanya bisa dilakukan dari H-3 hingga H-1 dari
+                tanggal rencana kunjungan.
+              </dt> */}
+              <dd className="mt-1 text-lg text-gray-900 sm:mt-0 sm:col-span-2">
+                Pendaftaran online dapat digunakan oleh peserta yang memiliki{" "}
+                <b>Nomor Rekam Medis</b>
+              </dd>
+            </div>
+            <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              {/* <dt className="text-sm font-medium text-gray-500">
+                Pendaftaran Online hanya bisa dilakukan dari H-3 hingga H-1 dari
+                tanggal rencana kunjungan.
+              </dt> */}
+              <dd className="mt-1 text-lg text-gray-900 sm:mt-0 sm:col-span-2">
+                Pendaftaran Online hanya bisa dilakukan dari H-5 hingga H-1 dari
                 tanggal rencana kunjungan.
               </dd>
             </div>
@@ -35,8 +57,8 @@ export default function Partners() {
                 Application for
               </dt> */}
               <dd className="mt-1 text-lg text-gray-900 sm:mt-0 sm:col-span-2">
-                Nomor pendaftaran Online Wajib di Simpan dan di Bawa pada saat
-                hari kunjungan.
+                Nomor pendaftaran Online Wajib di Unduh dan di lihatkan ke
+                petugas pada saat hari kunjungan.
               </dd>
             </div>
             <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -126,7 +148,8 @@ export default function Partners() {
                         aria-hidden="true"
                       /> */}
                       <span className="ml-2 flex-1 w-0 truncate">
-                        SURAT RUJUKAN ASLI dari Klinik / Puskesmas (Faskes 1)
+                        SURAT KONTROL / SURAT RUJUKAN ASLI dari Klinik /
+                        Puskesmas (Faskes 1)
                       </span>
                     </div>
                     <div className="ml-4 flex-shrink-0"></div>

@@ -11,6 +11,7 @@ export default function Input({
   inputClassName,
   type,
   readOnly,
+  isRequired,
 }) {
   return (
     <div className="flex flex-col mb-2">
@@ -55,4 +56,5 @@ Input.propTypes = {
   inputClassName: propTypes.string,
   type: propTypes.oneOf(["text", "email", "password", "number"]),
   readOnly: propTypes.oneOf(["true", "false"]),
+  required: propTypes.oneOf(["true", "false"]),
 };
