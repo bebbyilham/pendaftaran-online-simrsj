@@ -81,6 +81,7 @@ function PendaftaranLamaForm({ history }) {
           // nama(res.status);
           setceknama(res.data.nama_pasien);
           setceknik(res.data.nomor_pengenal);
+          setnokartu(res.data.no_bpjs);
           // setceknohp(res.data.hp);
         }
 
@@ -156,12 +157,13 @@ function PendaftaranLamaForm({ history }) {
   const [cekmr, setcekmr] = useState(null);
   const [ceknama, setceknama] = useState(null);
   const [ceknik, setceknik] = useState(null);
+  const [ceknokartu, setnokartu] = useState(null);
   const [berhasil, setberhasil] = useState(null);
   // const [ceknohp, setceknohp] = useState(null);
 
   async function submit(e) {
     e.preventDefault();
-    if (nokartu === "") {
+    if (nokartu || ceknokartu === "") {
       toast.error("No. Kartu Tidak Boleh Kosong !", {
         position: "top-center",
         autoClose: 5000,
@@ -174,24 +176,27 @@ function PendaftaranLamaForm({ history }) {
     } else {
       bpjs
         .cekpeserta({
-          nokartu,
+          nokartu: ceknokartu,
         })
         .then((res) => {
           // console.log(res);
           // console.log(res.metaData);
           if (res.peserta) {
-            toast.info(res.peserta.statusPeserta.keterangan, {
-              position: "top-center",
-              autoClose: false,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
+            toast.info(
+              "STATUS PESERTA : " + res.peserta.statusPeserta.keterangan,
+              {
+                position: "top-center",
+                autoClose: false,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              }
+            );
           }
           if (res.metaData) {
-            toast.error(res.metaData.message, {
+            toast.error("STATUS PESERTA : " + res.metaData.message, {
               position: "top-center",
               autoClose: 5000,
               hideProgressBar: false,
@@ -205,7 +210,7 @@ function PendaftaranLamaForm({ history }) {
         .then((res) =>
           pasien.pasienlama({
             norm: nomr,
-            nomorkartu: nokartu,
+            nomorkartu: ceknokartu,
             nik: ceknik,
             nama: ceknama,
             nohp,
@@ -315,8 +320,19 @@ function PendaftaranLamaForm({ history }) {
             progress: undefined,
           });
         }
-        if (res.metaData) {
+        if (res.metadata) {
           toast.error(res.metaData.message, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+        if (res.code === "201") {
+          toast.error(res.metadata.message, {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
@@ -441,23 +457,24 @@ function PendaftaranLamaForm({ history }) {
               <div className="w-full justify flex">
                 <div className="w-1/2">
                   <Input
-                    value={nokartu}
+                    value={ceknokartu}
                     // error={ERRORS?.nokartu?.message}
                     name="nokartu"
                     type="text"
                     onChange={setState}
                     placeholder="Masukan nomor kartu"
                     labelName="Nomor Kartu"
+                    readOnly={true}
                   />
                 </div>
-                <div className="w-1/6 mt-5 ml-2">
+                {/* <div className="w-1/6 mt-5 ml-2">
                   <button
                     onClick={cekpeserta}
                     className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-800 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-1 w-full"
                   >
                     <SearchCircleIcon className="h-5 w-5 text-white mx-auto" />
                   </button>
-                </div>
+                </div> */}
               </div>
 
               <Input
