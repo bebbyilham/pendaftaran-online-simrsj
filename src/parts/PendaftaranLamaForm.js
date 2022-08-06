@@ -37,7 +37,7 @@ function PendaftaranLamaForm({ history }) {
       nomr,
       // eslint-disable-next-line
       nik,
-
+      tanggallahir,
       nohp,
       // eslint-disable-next-line
       pembayaran,
@@ -53,6 +53,7 @@ function PendaftaranLamaForm({ history }) {
     nama: "",
     nomr: "",
     nik: "",
+    tanggallahir: "",
     nohp: "",
     pembayaran: "",
     pembayaranlain: "",
@@ -64,7 +65,7 @@ function PendaftaranLamaForm({ history }) {
   async function ceknomr(e) {
     e.preventDefault();
     pasien
-      .detailspasien(nomr)
+      .detailspasien(nomr, moment(tlahir).format("YYYY-MM-DD"))
       .then((res) => {
         if ((res.status = "success")) {
           setcekmr(res.status);
@@ -374,7 +375,7 @@ function PendaftaranLamaForm({ history }) {
         </h1>
         <form onSubmit={submit}>
           <div className="w-full justify flex">
-            <div className="w-1/2">
+            <div className="w-1/2 mr-2">
               <Input
                 value={nomr}
                 // error={ERRORS?.nomr?.message}
@@ -383,6 +384,25 @@ function PendaftaranLamaForm({ history }) {
                 onChange={setState}
                 placeholder="Masukan No. MR"
                 labelName="No. Rekam Medis"
+              />
+            </div>
+            <div className="w-1/2">
+              <label
+                htmlFor={tanggallahir}
+                className={["block text-sm font-medium text-gray-900"].join(
+                  " "
+                )}
+              >
+                Tanggal Lahir
+              </label>
+              <DatePicker
+                className="focus:outline-none bg-white border w-full px-5 py-2 mt-1 mb-2 shadow-sm sm:text-sm border-gray-300 rounded-md "
+                selected={tlahir}
+                onChange={(date) => setTlahirDate(date)}
+                peekNextMonth
+                showMonthDropdown
+                showYearDropdown
+                dateFormat="yyyy-MM-dd"
               />
             </div>
             <div className="w-1/6 mt-5 ml-2">
