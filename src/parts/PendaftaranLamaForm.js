@@ -592,24 +592,6 @@ function PendaftaranLamaForm({ history }) {
               className="bg-white rounded-xl shadow-lg shadow-neutral-200 w-full"
             >
               <div className="bg-white rounded-xl p-8">
-                {/* <div className="flex justify-between mb-4">
-                  <div>
-                    <p className="text-lg font-semibold text-neutral-700">
-                      {nampasien}
-                    </p>
-                    <p className="mt-0.5  text-neutral-400 text-sm">
-                      {nomorrm}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-lg font-semibold text-neutral-700">
-                      {kodebooking}
-                    </p>
-                    <p className="mt-0.5  text-neutral-400 text-sm">
-                      {tglregistrasi}
-                    </p>
-                  </div>
-                </div> */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <span className="text-lg font-semibold text-neutral-700">
