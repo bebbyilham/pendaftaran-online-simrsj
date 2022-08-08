@@ -409,6 +409,8 @@ function PendaftaranLamaForm({ history }) {
               <button
                 onClick={ceknomr}
                 className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-800 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-1 w-full"
+                data-bs-toggle="tooltip"
+                title="Cek Data"
               >
                 <CheckCircleIcon className="h-5 w-5 text-white mx-auto" />
               </button>
@@ -487,7 +489,7 @@ function PendaftaranLamaForm({ history }) {
                     labelName="Poli Tujuan"
                     name="politujuan"
                     value={politujuan}
-                    fallbackText="Pilih psssoli"
+                    fallbackText="Pilih Poli"
                     onClick={setState}
                     menuPosition={"auto"}
                     className="w-1/2"
