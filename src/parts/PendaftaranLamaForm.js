@@ -250,7 +250,7 @@ function PendaftaranLamaForm({ history }) {
   }
 
   async function cekjadwaldokter(e) {
-    e.preventDefault();
+    setStartDate(e);
 
     dokter
       .cekjadwaldokter({
@@ -487,7 +487,7 @@ function PendaftaranLamaForm({ history }) {
                     labelName="Poli Tujuan"
                     name="politujuan"
                     value={politujuan}
-                    fallbackText="Pilih poli"
+                    fallbackText="Pilih psssoli"
                     onClick={setState}
                     menuPosition={"auto"}
                     className="w-1/2"
@@ -503,7 +503,7 @@ function PendaftaranLamaForm({ history }) {
                     ))}
                   </Select>
                 </div>
-                <div className="w-1/3">
+                <div className="w-1/2">
                   <label
                     htmlFor={tglkunjungan}
                     className={["block text-sm font-medium text-gray-900"].join(
@@ -516,7 +516,7 @@ function PendaftaranLamaForm({ history }) {
                     name="tglkunjungan"
                     className="focus:outline-none bg-white border w-full px-5 py-2 mt-1 mb-2 shadow-sm sm:text-sm border-gray-300 rounded-md "
                     selected={startDate}
-                    onChange={(date) => setStartDate(date)}
+                    onChange={cekjadwaldokter}
                     minDate={new Date().setDate(new Date().getDate() + 3)}
                     maxDate={new Date().setDate(new Date().getDate() + 7)}
                     showDisabledMonthNavigation
@@ -525,14 +525,14 @@ function PendaftaranLamaForm({ history }) {
                     labelName=""
                   />
                 </div>
-                <div className="w-1/6 mt-5 ml-2">
+                {/* <div className="w-1/6 mt-5 ml-2">
                   <button
                     onClick={cekjadwaldokter}
                     className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-800 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-1 w-full"
                   >
                     <CheckCircleIcon className="h-5 w-5 text-white" />
                   </button>
-                </div>
+                </div> */}
               </div>
               {cekjadwal === "200" && (
                 <>
