@@ -409,6 +409,8 @@ function PendaftaranLamaForm({ history }) {
               <button
                 onClick={ceknomr}
                 className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-800 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-1 w-full"
+                data-bs-toggle="tooltip"
+                title="Cek Data"
               >
                 <CheckCircleIcon className="h-5 w-5 text-white mx-auto" />
               </button>
@@ -487,7 +489,7 @@ function PendaftaranLamaForm({ history }) {
                     labelName="Poli Tujuan"
                     name="politujuan"
                     value={politujuan}
-                    fallbackText="Pilih psssoli"
+                    fallbackText="Pilih Poli"
                     onClick={setState}
                     menuPosition={"auto"}
                     className="w-1/2"
@@ -534,6 +536,7 @@ function PendaftaranLamaForm({ history }) {
                   </button>
                 </div> */}
               </div>
+
               {cekjadwal === "200" && (
                 <>
                   <div className="w-full justify flex">
@@ -590,24 +593,6 @@ function PendaftaranLamaForm({ history }) {
               className="bg-white rounded-xl shadow-lg shadow-neutral-200 w-full"
             >
               <div className="bg-white rounded-xl p-8">
-                {/* <div className="flex justify-between mb-4">
-                  <div>
-                    <p className="text-lg font-semibold text-neutral-700">
-                      {nampasien}
-                    </p>
-                    <p className="mt-0.5  text-neutral-400 text-sm">
-                      {nomorrm}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-lg font-semibold text-neutral-700">
-                      {kodebooking}
-                    </p>
-                    <p className="mt-0.5  text-neutral-400 text-sm">
-                      {tglregistrasi}
-                    </p>
-                  </div>
-                </div> */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <span className="text-lg font-semibold text-neutral-700">
