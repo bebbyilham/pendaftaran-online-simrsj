@@ -534,6 +534,7 @@ function PendaftaranLamaForm({ history }) {
                   </button>
                 </div>
               </div>
+
               {cekjadwal === "200" && (
                 <>
                   <div className="w-full justify flex">
