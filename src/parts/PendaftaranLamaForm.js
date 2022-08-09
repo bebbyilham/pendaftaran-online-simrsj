@@ -419,22 +419,6 @@ function PendaftaranLamaForm({ history }) {
           {(cekmr === "success" && (
             <>
               {/* <div className="w-full justify flex">
-                <div className="w-3/5 mr-1">
-                  <Select
-                    labelName="Pembayaran"
-                    name="pembayaran"
-                    value={pembayaran}
-                    fallbackText="-"
-                    onClick={setState}
-                    className="w-full"
-                  >
-                    <option value="umum">Umum</option>
-                    <option value="bpjs">BPJS</option>
-                  </Select>
-                </div>
-              </div> */}
-
-              {/* <div className="w-full justify flex">
                 <div className="w-1/2">
                   <Input
                     value={nokartu}
