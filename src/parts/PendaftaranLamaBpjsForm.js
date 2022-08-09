@@ -298,7 +298,7 @@ function PendaftaranLamaForm({ history }) {
   }
 
   async function cekjadwaldokter(e) {
-    setStartDate(e);
+    e.preventDefault();
     dokter
       .cekjadwaldokter({
         kodepoli: politujuan,
@@ -562,7 +562,7 @@ function PendaftaranLamaForm({ history }) {
                     name="tglkunjungan"
                     className="focus:outline-none bg-white border w-full px-5 py-2 mt-1 mb-2 shadow-sm sm:text-sm border-gray-300 rounded-md "
                     selected={startDate}
-                    onChange={cekjadwaldokter}
+                    onChange={(date) => setStartDate(date)}
                     minDate={new Date().setDate(new Date().getDate() + 3)}
                     maxDate={new Date().setDate(new Date().getDate() + 7)}
                     showDisabledMonthNavigation
@@ -571,14 +571,16 @@ function PendaftaranLamaForm({ history }) {
                     labelName=""
                   />
                 </div>
-                {/* <div className="w-1/6 mt-5 ml-2">
+                <div className="w-1/6 mt-5 ml-2">
                   <button
                     onClick={cekjadwaldokter}
                     className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-800 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-1 w-full"
+                    data-bs-toggle="tooltip"
+                    title="Cek Jadwal"
                   >
                     <CheckCircleIcon className="h-5 w-5 text-white" />
                   </button>
-                </div> */}
+                </div>
               </div>
               {cekjadwal === "200" && (
                 <>
