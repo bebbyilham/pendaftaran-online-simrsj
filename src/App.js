@@ -13,12 +13,14 @@ import NotFound from "pages/404";
 //frontpage
 import Frontpage from "pages/Frontpage";
 //syarat ketentuan
+// eslint-disable-next-line
 import Syaratketentuan from "pages/Syaratketentuan";
 
 //pendaftaran
 // import PendaftaranBaru from "pages/PendaftaranBaru";
 import PendaftaranLama from "pages/PendaftaranLama";
 import PendaftaranLamaBpjs from "pages/PendaftaranLamaBpjs";
+import CariAntrean from "pages/CariAntrean";
 
 import { setAuthorizationHeader } from "configs/axios";
 
@@ -46,14 +48,15 @@ function App() {
       <Router history={history}>
         <Switch>
           <GuestRoute path="/home" component={Frontpage}></GuestRoute>
-          <GuestRoute
+          {/* <GuestRoute
             path="/syaratketentuan"
             component={Syaratketentuan}
-          ></GuestRoute>
+          ></GuestRoute> */}
           {/* <GuestRoute
             path="/pendaftaranbaru"
             component={PendaftaranBaru}
           ></GuestRoute> */}
+          <GuestRoute path="/cariantrean" component={CariAntrean}></GuestRoute>
           <GuestRoute
             path="/pendaftaranlamabpjs"
             component={PendaftaranLamaBpjs}

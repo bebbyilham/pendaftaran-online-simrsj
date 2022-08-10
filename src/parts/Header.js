@@ -52,6 +52,19 @@ function Header({ onLight, location }) {
               "hover:text-green-900 text-lg px-6 py-3 my-4 sm:my-0 font-medium",
             ].join(" ")}
             // href={`${process.env.REACT_APP_FRONTPAGE_URL}`}
+            href={`/cariantrean`}
+          >
+            Cari Antrean
+          </a>
+        </li>
+        <li className="leading-10">
+          <a
+            rel="noopener noreferrer"
+            className={[
+              linkColor,
+              "hover:text-green-900 text-lg px-6 py-3 my-4 sm:my-0 font-medium",
+            ].join(" ")}
+            // href={`${process.env.REACT_APP_FRONTPAGE_URL}`}
             href={`/home`}
           >
             Halaman Utama

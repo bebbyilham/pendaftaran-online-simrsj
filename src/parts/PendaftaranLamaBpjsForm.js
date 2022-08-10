@@ -48,6 +48,8 @@ function PendaftaranLamaForm({ history }) {
       politujuan,
       dokterpoli,
       tglkunjungan,
+      norujukan,
+      asalfaskes,
     },
     setState,
   ] = useForm({
@@ -62,6 +64,8 @@ function PendaftaranLamaForm({ history }) {
     politujuan: "",
     dokterpoli: "",
     tglkunjungan: "",
+    norujukan: "",
+    asalfaskes: "",
   });
   async function ceknomr(e) {
     e.preventDefault();
@@ -160,13 +164,15 @@ function PendaftaranLamaForm({ history }) {
   const [ceknama, setceknama] = useState(null);
   const [ceknik, setceknik] = useState(null);
   const [ceknokartu, setnokartu] = useState(null);
+  // eslint-disable-next-line
+  // const [ceknorujukan, setnorujukan] = useState(null);
   const [berhasil, setberhasil] = useState(null);
   // const [ceknohp, setceknohp] = useState(null);
 
   async function submit(e) {
     e.preventDefault();
     if (nokartu || ceknokartu === "") {
-      toast.error("No. Kartu Tidak Boleh Kosong !", {
+      toast.error("Data Belum Lengkap !", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -181,7 +187,7 @@ function PendaftaranLamaForm({ history }) {
           nokartu: ceknokartu,
         })
         .then((res) => {
-          // console.log(res);
+          console.log(res);
           // console.log(res.metaData);
           if (res.peserta) {
             toast.info(
@@ -209,78 +215,111 @@ function PendaftaranLamaForm({ history }) {
             });
           }
         })
-        .then((res) =>
-          pasien.pasienlama({
-            norm: nomr,
-            nomorkartu: ceknokartu,
-            nik: ceknik,
-            nama: ceknama,
-            nohp,
-            kodepoli: politujuan,
-            kodedokter: dokterpoli,
-            // jampraktek: praktek,
-            jeniskunjungan: "0",
-            tanggalperiksa: moment(startDate).format("YYYY-MM-DD"),
-            pembayaran: "bpjs",
-          })
-        )
         .then((res) => {
-          // console.log("====================================");
-          // console.log(res.metadata.message);
-          // console.log("====================================");
-          // console.log(res.metadata.code);
-          if (res.metadata.code === 200) {
-            setberhasil(res.metadata.code);
-            setnoantrean(res.response.nomorantrean);
-            setnomorrm(res.response.norm);
-            setnampasien(res.response.namapasien);
-            setkodebooking(res.response.kodebooking);
-            setnampoli(res.response.namapoli);
-            setketerangan(res.response.keterangan);
-            settglregistrasi(res.response.tglregistrasi);
-            settglperiksa(res.response.tanggalperiksa);
-            // console.log("====================================");
-            // console.log(res.metadata.code);
-            // console.log("====================================");
-            toast.success(
-              "Pendaftaran Berhasil NO. RM " +
-                res.response.norm +
-                " KODE BOOKING : " +
-                res.response.kodebooking,
-              {
-                position: "top-center",
-                autoClose: false,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
+          // if (asalfaskes || norujukan === "") {
+          //   toast.error("Data Belum Lengkap !", {
+          //     position: "top-center",
+          //     autoClose: 5000,
+          //     hideProgressBar: false,
+          //     closeOnClick: true,
+          //     pauseOnHover: true,
+          //     draggable: true,
+          //     progress: undefined,
+          //   });
+          // } else {
+          bpjs
+            .cekrujukan({
+              norujukan: norujukan,
+              asalfaskes: asalfaskes,
+            })
+            .then((res) => {
+              console.log(res);
+              console.log("rujukan", res.metaData);
+              if (res.metaData) {
+                toast.error("STATUS RUJUKAN : " + res.metaData.message, {
+                  position: "top-center",
+                  autoClose: false,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                });
+              } else if (res.rujukan) {
+                toast.info("STATUS RUJUKAN : Ditemukan", {
+                  position: "top-center",
+                  autoClose: false,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                });
+                pasien
+                  .pasienlama({
+                    norm: nomr,
+                    nomorkartu: ceknokartu,
+                    nik: ceknik,
+                    nama: ceknama,
+                    nohp,
+                    kodepoli: politujuan,
+                    kodedokter: dokterpoli,
+                    // jampraktek: praktek,
+                    jeniskunjungan: "0",
+                    tanggalperiksa: moment(startDate).format("YYYY-MM-DD"),
+                    pembayaran: "bpjs",
+                    nomorreferensi: norujukan,
+                  })
+                  .then((res) => {
+                    // console.log("====================================");
+                    // console.log(res.metadata.message);
+                    // console.log("====================================");
+                    // console.log(res.metadata.code);
+                    if (res.metadata.code === 200) {
+                      setberhasil(res.metadata.code);
+                      setnoantrean(res.response.nomorantrean);
+                      setnomorrm(res.response.norm);
+                      setnampasien(res.response.namapasien);
+                      setkodebooking(res.response.kodebooking);
+                      setnampoli(res.response.namapoli);
+                      setketerangan(res.response.keterangan);
+                      settglregistrasi(res.response.tglregistrasi);
+                      settglperiksa(res.response.tanggalperiksa);
+                      // console.log("====================================");
+                      // console.log(res.metadata.code);
+                      // console.log("====================================");
+                      toast.success(
+                        "Pendaftaran Berhasil NO. RM " +
+                          res.response.norm +
+                          " KODE BOOKING : " +
+                          res.response.kodebooking,
+                        {
+                          position: "top-center",
+                          autoClose: false,
+                          hideProgressBar: false,
+                          closeOnClick: true,
+                          pauseOnHover: true,
+                          draggable: true,
+                          progress: undefined,
+                        }
+                      );
+                    }
+                    if (res.metadata.code === 201) {
+                      toast.error(res.metadata.message, {
+                        position: "top-center",
+                        autoClose: false,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                      });
+                    }
+                  });
               }
-            );
-          }
-          if (res.metadata.code === 201) {
-            toast.error(res.metadata.message, {
-              position: "top-center",
-              autoClose: false,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
             });
-          }
-
-          // history.push("/home");
-          // toast.success(res.message, {
-          //   position: "top-center",
-          //   autoClose: false,
-          //   hideProgressBar: false,
-          //   closeOnClick: true,
-          //   pauseOnHover: true,
-          //   draggable: true,
-          //   progress: undefined,
-          // });
         })
+
         .catch((err) => {
           // console.log(err?.response?.data?.message);
           toast.error("Data belum lengkap !", {
@@ -490,6 +529,43 @@ function PendaftaranLamaForm({ history }) {
                     readOnly={true}
                   />
                 </div>
+                {/* <div className="w-1/6 mt-5 ml-2">
+                  <button
+                    onClick={cekpeserta}
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-800 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-1 w-full"
+                  >
+                    <SearchCircleIcon className="h-5 w-5 text-white mx-auto" />
+                  </button>
+                </div> */}
+              </div>
+              <div className="w-full justify flex">
+                <div className="w-1/2 mr-2">
+                  <Select
+                    multiple={true}
+                    labelName="Asal Faskes"
+                    name="asalfaskes"
+                    value={asalfaskes}
+                    fallbackText="Pilih faskes"
+                    onClick={setState}
+                    menuPosition={"auto"}
+                    className="w-1/2"
+                  >
+                    <option value="1">Klinik</option>
+                    <option value="2">Rumah Sakit</option>
+                  </Select>
+                </div>
+                <div className="w-1/2">
+                  <Input
+                    value={norujukan}
+                    // error={ERRORS?.nokartu?.message}
+                    name="norujukan"
+                    type="text"
+                    onChange={setState}
+                    placeholder="Masukan nomor rujukan"
+                    labelName="Nomor Rujukan"
+                  />
+                </div>
+
                 {/* <div className="w-1/6 mt-5 ml-2">
                   <button
                     onClick={cekpeserta}

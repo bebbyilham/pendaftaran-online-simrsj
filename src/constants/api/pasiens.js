@@ -7,4 +7,8 @@ export default {
   detailspasien: (id, tlahir) =>
     axios.get(`pasien/${id}/${tlahir}`).then((res) => res),
   pasienlama: (payload) => axios.post("/pendaftaran/pasienlama", payload),
+  detailantrean: (nomr, tanggalperiksa) =>
+    axios
+      .get(`pasien/cariantrean/${nomr}/${tanggalperiksa}`)
+      .then((res) => res),
 };
