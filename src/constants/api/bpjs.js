@@ -5,6 +5,7 @@ export default {
   //private
   // login: (credentials) => axios.post("/users/login", credentials),
   cekpeserta: (payload) => axios.post("/bpjs/cekkartu", payload),
+  cekrujukan: (payload) => axios.post("/bpjs/cekrujukan", payload),
   // refresh: (credentials) =>
   //   axios.post("/refresh-tokens", {
   //     refresh_token: credentials.refresh_token,
