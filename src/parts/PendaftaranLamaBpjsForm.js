@@ -194,7 +194,7 @@ function PendaftaranLamaForm({ history }) {
               "STATUS PESERTA : " + res.peserta.statusPeserta.keterangan,
               {
                 position: "top-center",
-                autoClose: false,
+                autoClose: 5000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -206,7 +206,7 @@ function PendaftaranLamaForm({ history }) {
           if (res.metaData) {
             toast.error("STATUS PESERTA : " + res.metaData.message, {
               position: "top-center",
-              autoClose: 5000,
+              autoClose: false,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
@@ -248,7 +248,7 @@ function PendaftaranLamaForm({ history }) {
               } else if (res.rujukan) {
                 toast.info("STATUS RUJUKAN : Ditemukan", {
                   position: "top-center",
-                  autoClose: false,
+                  autoClose: 5000,
                   hideProgressBar: false,
                   closeOnClick: true,
                   pauseOnHover: true,
@@ -538,6 +538,25 @@ function PendaftaranLamaForm({ history }) {
                   </button>
                 </div> */}
               </div>
+
+              <Input
+                value={ceknama}
+                // error={ERRORS?.nama?.message}
+                name="nama"
+                onChange={setState}
+                placeholder="Masukan nama lengkap"
+                labelName="Nama"
+                readOnly={true}
+              />
+              <Input
+                value={ceknik}
+                // error={ERRORS?.nik?.message}
+                name="nik"
+                onChange={setState}
+                placeholder="Masukan nik lengkap"
+                labelName="NIK"
+                readOnly={true}
+              />
               <div className="w-full justify flex">
                 <div className="w-1/2 mr-2">
                   <Select
@@ -550,7 +569,7 @@ function PendaftaranLamaForm({ history }) {
                     menuPosition={"auto"}
                     className="w-1/2"
                   >
-                    <option value="1">Klinik</option>
+                    <option value="1">Klinik/Puskesmas</option>
                     <option value="2">Rumah Sakit</option>
                   </Select>
                 </div>
@@ -575,25 +594,6 @@ function PendaftaranLamaForm({ history }) {
                   </button>
                 </div> */}
               </div>
-
-              <Input
-                value={ceknama}
-                // error={ERRORS?.nama?.message}
-                name="nama"
-                onChange={setState}
-                placeholder="Masukan nama lengkap"
-                labelName="Nama"
-                readOnly={true}
-              />
-              <Input
-                value={ceknik}
-                // error={ERRORS?.nik?.message}
-                name="nik"
-                onChange={setState}
-                placeholder="Masukan nik lengkap"
-                labelName="NIK"
-                readOnly={true}
-              />
               <Input
                 value={nohp}
                 // error={ERRORS?.nohp?.message}
@@ -603,6 +603,7 @@ function PendaftaranLamaForm({ history }) {
                 placeholder="No. Hp"
                 labelName="Nomor Handphone"
               />
+
               <div className="w-full justify flex">
                 <div className="w-1/2 mr-2">
                   <Select
