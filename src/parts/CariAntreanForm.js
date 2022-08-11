@@ -1,11 +1,7 @@
-import React, { useEffect, useState, createRef } from "react";
+import React, { useState, createRef } from "react";
 import { withRouter } from "react-router-dom";
 
 import pasien from "constants/api/pasiens";
-
-import bpjs from "constants/api/bpjs";
-import poli from "constants/api/poli";
-import dokter from "constants/api/dokter";
 
 // import { ReactComponent as RegisterImages } from "assets/images/daftar-baru.svg";
 
@@ -16,7 +12,6 @@ import useForm from "helpers/hooks/useForm";
 import fieldErrors from "helpers/fieldErrors";
 
 import Input from "components/Form/Input";
-import Select from "components/Form/Select";
 
 import moment from "moment";
 import DatePicker from "react-datepicker";
