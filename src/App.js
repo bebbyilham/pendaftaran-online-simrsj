@@ -8,7 +8,7 @@ import "assets/css/style.css";
 
 import GuestRoute from "components/Routes/GuestRoute";
 
-import NotFound from "pages/404";
+// import NotFound from "pages/404";
 
 //frontpage
 import Frontpage from "pages/Frontpage";
