@@ -66,7 +66,8 @@ function App() {
             component={PendaftaranLama}
           ></GuestRoute>
 
-          <Route path="*" component={NotFound}></Route>
+          <Route path="*" component={Frontpage}></Route>
+          {/* <Route path="*" component={NotFound}></Route> */}
         </Switch>
       </Router>
     </>
