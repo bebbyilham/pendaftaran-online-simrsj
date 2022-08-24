@@ -8,7 +8,7 @@ import "assets/css/style.css";
 
 import GuestRoute from "components/Routes/GuestRoute";
 
-import NotFound from "pages/404";
+// import NotFound from "pages/404";
 
 //frontpage
 import Frontpage from "pages/Frontpage";
@@ -47,7 +47,6 @@ function App() {
     <>
       <Router history={history}>
         <Switch>
-          <GuestRoute path="/" component={Frontpage}></GuestRoute>
           <GuestRoute path="/home" component={Frontpage}></GuestRoute>
           {/* <GuestRoute
             path="/syaratketentuan"
@@ -67,7 +66,8 @@ function App() {
             component={PendaftaranLama}
           ></GuestRoute>
 
-          <Route path="*" component={NotFound}></Route>
+          <Route path="*" component={Frontpage}></Route>
+          {/* <Route path="*" component={NotFound}></Route> */}
         </Switch>
       </Router>
     </>
