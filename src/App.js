@@ -47,6 +47,7 @@ function App() {
     <>
       <Router history={history}>
         <Switch>
+          <GuestRoute path="/" component={Frontpage}></GuestRoute>
           <GuestRoute path="/home" component={Frontpage}></GuestRoute>
           {/* <GuestRoute
             path="/syaratketentuan"
