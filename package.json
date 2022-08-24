@@ -28,7 +28,7 @@
     "watch:css": "postcss --watch tailwindcss/style.css -o src/assets/css/style.css",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --passWithNoTests",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
