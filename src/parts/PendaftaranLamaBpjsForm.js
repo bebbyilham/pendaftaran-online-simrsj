@@ -626,6 +626,7 @@ function PendaftaranLamaForm({ history }) {
                     ))}
                   </Select>
                 </div>
+
                 <div className="w-1/2">
                   <label
                     htmlFor={tglkunjungan}
@@ -698,6 +699,14 @@ function PendaftaranLamaForm({ history }) {
           <div className="hidden sm:block" aria-hidden="true">
             <div className="py-5">
               <div className="border-t border-gray-200" />
+              <span className="text-xs text-red-600">
+                * klik cek data terlebih dahulu sebelum mendaftar
+              </span>
+              <br />
+              <span className="text-xs text-red-600">
+                * klik cek jadwal dan pilih dokter terlebih dahulu sebelum
+                mendaftar
+              </span>
             </div>
           </div>
           <button
