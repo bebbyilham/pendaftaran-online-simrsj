@@ -700,12 +700,29 @@ function PendaftaranLamaForm({ history }) {
             <div className="py-5">
               <div className="border-t border-gray-200" />
               <span className="text-xs text-red-600">
-                * klik cek data terlebih dahulu sebelum mendaftar
+                Petunjuk Pendaftaran:
               </span>
               <br />
               <span className="text-xs text-red-600">
-                * klik cek jadwal dan pilih dokter terlebih dahulu sebelum
-                mendaftar
+                1. Isi No MR dan Tanggal Lahir
+              </span>
+              <br />
+              <span className="text-xs text-red-600">
+                2. Klik tombol Cek data
+              </span>
+              <br />
+              <span className="text-xs text-red-600">
+                3. Isi data dengan lengkap
+              </span>
+              <br />
+              <span className="text-xs text-red-600">
+                4. Klik tombol Cek Jadwal
+              </span>
+              <br />
+              <span className="text-xs text-red-600">5. Pilih dokter</span>
+              <br />
+              <span className="text-xs text-red-600">
+                6. Klik tombol Daftar
               </span>
             </div>
           </div>
