@@ -45,9 +45,15 @@ export default function Hero() {
         </Link>
         <Link
           to="/pendaftaranlamabpjs"
-          className="bg-green-800 hover:bg-green-900 transition-all duration-200 rounded-md focus:outline-none shadow-inner text-white px-4 md:px-6 py-3 whitespace-no-wrap mb-8"
+          className="bg-green-800 hover:bg-green-900 transition-all duration-200 rounded-md focus:outline-none shadow-inner text-white px-4 md:px-6 py-3 whitespace-no-wrap mb-8 mr-2"
         >
           Pasien BPJS
+        </Link>
+        <Link
+          to="/pendaftaranbarubooking"
+          className="bg-green-800 hover:bg-green-900 transition-all duration-200 rounded-md focus:outline-none shadow-inner text-white px-4 md:px-6 py-3 whitespace-no-wrap mb-8"
+        >
+          Pasien Baru
         </Link>
         <div className="w-full mt-6">
           <a

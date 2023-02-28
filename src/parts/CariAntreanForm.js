@@ -160,8 +160,8 @@ function CariAntreanForm({ history }) {
                 name="nomr"
                 type="number"
                 onChange={setState}
-                placeholder="Masukan No. MR"
-                labelName="No. Rekam Medis"
+                placeholder="Masukan NIK"
+                labelName="NIK"
               />
             </div>
             <div className="w-1/2">
@@ -278,9 +278,10 @@ function CariAntreanForm({ history }) {
                       </span>
                     </div>
                   </div>
-                  <div className="text-center text-xs font-semibold rounded-lg mt-3">
+                  <div className="text-red-500 text-center text-xs font-semibold rounded-lg mt-3">
                     {keterangan}
-                    <br />
+                  </div>
+                  <div className="text-center text-xs font-semibold rounded-lg mt-3">
                     {
                       "*Simpan bukti pendaftaran online untuk pencatatan administrasi."
                     }
