@@ -21,6 +21,7 @@ import Syaratketentuan from "pages/Syaratketentuan";
 import PendaftaranLama from "pages/PendaftaranLama";
 import PendaftaranLamaBpjs from "pages/PendaftaranLamaBpjs";
 import CariAntrean from "pages/CariAntrean";
+import PendaftaranBaruBooking from "pages/PendaftaranBaruBooking";
 
 import { setAuthorizationHeader } from "configs/axios";
 
@@ -64,6 +65,10 @@ function App() {
           <GuestRoute
             path="/pendaftaranlama"
             component={PendaftaranLama}
+          ></GuestRoute>
+          <GuestRoute
+            path="/pendaftaranbarubooking"
+            component={PendaftaranBaruBooking}
           ></GuestRoute>
 
           <Route path="*" component={Frontpage}></Route>
