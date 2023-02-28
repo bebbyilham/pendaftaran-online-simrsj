@@ -203,7 +203,7 @@ function PendaftaranBaruBookingForm({ history }) {
           setketerangan(res.response.keterangan);
           settglregistrasi(res.response.tglregistrasi);
           settglperiksa(res.response.tanggalperiksa);
-          // history.push("/home");
+          history.push("/cariantrean");
           toast.success(
             "Pendaftaran Berhasil Kodebooking " +
               res.response.kodebooking +
