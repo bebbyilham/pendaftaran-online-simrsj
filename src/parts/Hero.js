@@ -38,34 +38,31 @@ export default function Hero() {
           </button>
         </form> */}
         <Link
-          to="/pendaftaranlama"
-          className="bg-green-800 hover:bg-green-900 transition-all duration-200 rounded-md focus:outline-none shadow-inner text-white px-4 md:px-6 py-3 whitespace-no-wrap mr-2"
-        >
-          Pasien Mandiri
-        </Link>
-        <Link
           to="/pendaftaranlamabpjs"
           className="bg-green-800 hover:bg-green-900 transition-all duration-200 rounded-md focus:outline-none shadow-inner text-white px-4 md:px-6 py-3 whitespace-no-wrap mb-8 mr-2"
         >
           Pasien BPJS
         </Link>
         <Link
-          to="/pendaftaranbarubooking"
-          className="bg-green-800 hover:bg-green-900 transition-all duration-200 rounded-md focus:outline-none shadow-inner text-white px-4 md:px-6 py-3 whitespace-no-wrap mb-8"
+          to="/pendaftaranlama"
+          className="bg-green-800 hover:bg-green-900 transition-all duration-200 rounded-md focus:outline-none shadow-inner text-white px-4 md:px-6 py-3 whitespace-no-wrap mr-2"
         >
-          Pasien Baru
+          Pasien Mandiri
         </Link>
+
         <div className="w-full mt-6">
-          <a
-            rel="noopener noreferrer"
-            className={[
-              "text-white sm:text-white hover:text-green-900 text-lg px-4 py-3 my-8 sm:my-0 font-medium",
-            ].join(" ")}
-            // href={`${process.env.REACT_APP_FRONTPAGE_URL}`}
-            href={`/cariantrean`}
+          <Link
+            to="/pendaftaranbarubooking"
+            className="bg-green-800 hover:bg-green-900 transition-all duration-200 rounded-md focus:outline-none shadow-inner text-white px-4 md:px-6 py-3 whitespace-no-wrap mb-8 mr-2"
           >
-            <span>Cari Antrean</span>
-          </a>
+            Pasien Baru
+          </Link>
+          <Link
+            to="/cariantrean"
+            className="bg-green-800 hover:bg-green-900 transition-all duration-200 rounded-md focus:outline-none shadow-inner text-white px-4 md:px-6 py-3 whitespace-no-wrap mb-8"
+          >
+            Cari Antrean
+          </Link>
         </div>
       </div>
       <div className="hidden w-1/2 md:flex justify-end pt-24 ">

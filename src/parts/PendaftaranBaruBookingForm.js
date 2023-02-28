@@ -221,15 +221,31 @@ function PendaftaranBaruBookingForm({ history }) {
           );
         }
         if (res.metadata.code === 201) {
-          toast.warning(res.metadata.message, {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
+          if (
+            res.metadata.message ===
+            "NIK dengan Layanan yang dipilih telah terdaftar, silahkan cari disini !"
+          ) {
+            history.push("/cariantrean");
+            toast.warning(res.metadata.message, {
+              position: "top-center",
+              autoClose: false,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          } else {
+            toast.warning(res.metadata.message, {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          }
         }
         // history.push("/home");
         // toast.success(res.message, {
