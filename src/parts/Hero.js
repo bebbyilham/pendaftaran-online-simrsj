@@ -50,7 +50,7 @@ export default function Hero() {
           Pasien Mandiri
         </Link>
 
-        <div className="w-full mt-6">
+        <div className="w-full mt-8">
           <Link
             to="/pendaftaranbarubooking"
             className="bg-green-800 hover:bg-green-900 transition-all duration-200 rounded-md focus:outline-none shadow-inner text-white px-4 md:px-6 py-3 whitespace-no-wrap mb-8 mr-2"
