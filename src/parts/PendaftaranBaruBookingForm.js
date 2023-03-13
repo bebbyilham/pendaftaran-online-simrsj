@@ -455,7 +455,7 @@ function PendaftaranBaruBookingForm({ history }) {
         </form>
       </div>
 
-      <div className="w-full sm:w-3/12">
+      <div className="hidden w-full sm:w-3/12">
         {(berhasil === 200 && (
           <>
             <div className="w-full rounded-xl sm:w-3/12 xs:w-full p-4 ">
