@@ -105,7 +105,7 @@ export default function Partners() {
                         aria-hidden="true"
                       /> */}
                       <span className="ml-2 flex-1 w-0 truncate">
-                        KTP ASLI yang masih berlaku atau
+                        NIK/KTP/KIS digital
                       </span>
                     </div>
                     <div className="ml-4 flex-shrink-0"></div>
@@ -117,7 +117,7 @@ export default function Partners() {
                         aria-hidden="true"
                       /> */}
                       <span className="ml-2 flex-1 w-0 truncate">
-                        KARTU KELUARGA (KK) ASLI bagi pasien anak dan
+                        Kartu keluarga (KK) bagi pasien anak
                       </span>
                     </div>
                     <div className="ml-4 flex-shrink-0"></div>
@@ -129,7 +129,7 @@ export default function Partners() {
                         aria-hidden="true"
                       /> */}
                       <span className="ml-2 flex-1 w-0 truncate">
-                        KARTU BEROBAT ASLI (Bagi Pasien Ulangan)
+                        Kartu berobat/ Nomer MR pasien ( bagi pasien ulangan)
                       </span>
                     </div>
                     <div className="ml-4 flex-shrink-0"></div>
@@ -148,8 +148,7 @@ export default function Partners() {
                         aria-hidden="true"
                       /> */}
                       <span className="ml-2 flex-1 w-0 truncate">
-                        SURAT KONTROL / SURAT RUJUKAN ASLI dari Klinik /
-                        Puskesmas (Faskes 1)
+                        NIK/KTP/KIS digital
                       </span>
                     </div>
                     <div className="ml-4 flex-shrink-0"></div>
@@ -161,7 +160,7 @@ export default function Partners() {
                         aria-hidden="true"
                       /> */}
                       <span className="ml-2 flex-1 w-0 truncate">
-                        KARTU BPJS ASLI
+                        Kartu keluarga (KK) bagi pasien anak
                       </span>
                     </div>
                     <div className="ml-4 flex-shrink-0"></div>
@@ -173,31 +172,7 @@ export default function Partners() {
                         aria-hidden="true"
                       /> */}
                       <span className="ml-2 flex-1 w-0 truncate">
-                        KTP ASLI yang masih berlaku
-                      </span>
-                    </div>
-                    <div className="ml-4 flex-shrink-0"></div>
-                  </li>
-                  <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
-                    <div className="w-0 flex-1 flex items-center">
-                      {/* <PaperClipIcon
-                        className="flex-shrink-0 h-5 w-5 text-gray-400"
-                        aria-hidden="true"
-                      /> */}
-                      <span className="ml-2 flex-1 w-0 truncate">
-                        KARTU KELUARGA ASLI (KK) bagi pasien anak dan
-                      </span>
-                    </div>
-                    <div className="ml-4 flex-shrink-0"></div>
-                  </li>
-                  <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
-                    <div className="w-0 flex-1 flex items-center">
-                      {/* <PaperClipIcon
-                        className="flex-shrink-0 h-5 w-5 text-gray-400"
-                        aria-hidden="true"
-                      /> */}
-                      <span className="ml-2 flex-1 w-0 truncate">
-                        KARTU BEROBAT ASLI (Bagi Pasien Ulangan)
+                        Kartu berobat/ Nomer MR pasien ( bagi pasien ulangan)
                       </span>
                     </div>
                     <div className="ml-4 flex-shrink-0"></div>
