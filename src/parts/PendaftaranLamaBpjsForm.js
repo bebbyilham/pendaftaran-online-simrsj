@@ -642,7 +642,7 @@ function PendaftaranLamaForm({ history }) {
                     selected={startDate}
                     onChange={(date) => setStartDate(date)}
                     minDate={new Date().setDate(new Date().getDate() + 1)}
-                    maxDate={new Date().setDate(new Date().getDate() + 5)}
+                    maxDate={new Date().setDate(new Date().getDate() + 35)}
                     showDisabledMonthNavigation
                     dropdownMode="select"
                     dateFormat="yyyy-MM-dd"
