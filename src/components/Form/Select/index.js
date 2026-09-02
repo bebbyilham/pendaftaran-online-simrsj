@@ -10,6 +10,8 @@ export default function Select({
   children,
   onClick,
   fallbackText,
+  icon: Icon,
+  isRequired,
 }) {
   const [toggle, settoggle] = useState(() => false);
   const selectWrapper = useRef(null);
@@ -35,45 +37,72 @@ export default function Select({
   const selected = items.find((item) => item.props.value === value);
 
   return (
-    <div className="flex flex-col mb-2 col-span-6 sm:col-span-3">
+    <div className="flex flex-col mb-4 w-full">
       {labelName && (
-        <label htmlFor="" className="show text-sm font-medium text-gray-900">
+        <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
           {labelName}
+          {isRequired && <span className="text-red-500 ml-1 font-bold">*</span>}
         </label>
       )}
-      <div className="relative" ref={selectWrapper} onClick={toggleSelect}>
+      <div className="relative" ref={selectWrapper}>
         <div
+          onClick={toggleSelect}
           className={[
-            "flex justify-between cursor-pointer mt-1 w-full py-1.5 px-5 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none sm:text-sm",
-            toggle ? "border-orange-500" : "border-gray-300",
+            "flex justify-between items-center cursor-pointer w-full h-11 bg-gray-50 hover:bg-white border text-sm rounded-xl transition-all duration-200 focus:outline-none shadow-sm",
+            Icon ? "pl-11 pr-4" : "px-4",
+            toggle
+              ? "border-blue-500 ring-2 ring-blue-100 bg-white"
+              : "border-gray-300 hover:border-gray-400 text-gray-800",
             className,
-          ].join("")}
-        >
-          <span className={value === "" ? "text-gray-500" : ""}>
-            {selected?.props.children ?? fallbackText}
-          </span>
-          <div className="transition-all duration-200 border-gray-300 border-b-2 border-r-2 transform rotate-45 translate-y-1 w-2 h-2"></div>
-        </div>
-        <div
-          className={[
-            "absolute left-0 bg-white border border-gray-300  py-2 w-full",
-            toggle ? "" : "hidden",
           ].join(" ")}
         >
-          {items.map((item, index) => {
-            return (
-              <div
-                key={index}
-                className="cursor-pointer px-4 py-1 bg-white hover:bg-gray-300 transition-all duration-200"
-                onClick={() =>
-                  onClick({ target: { name: name, value: item.props.value } })
-                }
-              >
-                {item.props.children}
-              </div>
-            );
-          })}
+          {Icon && (
+            <div className="absolute left-3.5 flex items-center pointer-events-none text-gray-400">
+              <Icon className="w-5 h-5" />
+            </div>
+          )}
+          <span className={value === "" || !value ? "text-gray-400" : "text-gray-900 font-medium truncate"}>
+            {selected?.props.children ?? fallbackText}
+          </span>
+          <svg
+            className={[
+              "w-4 h-4 text-gray-400 transition-transform duration-200 ml-2 flex-shrink-0",
+              toggle ? "transform rotate-180 text-blue-500" : "",
+            ].join(" ")}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+          </svg>
         </div>
+        {toggle && (
+          <div className="absolute left-0 right-0 z-50 bg-white border border-gray-200 rounded-xl shadow-2xl py-1 mt-1.5 max-h-64 overflow-y-auto ring-1 ring-black/5">
+            {items.map((item, index) => {
+              const isSelected = item.props.value === value;
+              return (
+                <div
+                  key={index}
+                  className={[
+                    "cursor-pointer px-4 py-2.5 text-sm transition-colors duration-100 flex items-center justify-between",
+                    isSelected
+                      ? "bg-blue-50/80 text-blue-700 font-semibold"
+                      : "text-gray-700 hover:bg-gray-50",
+                  ].join(" ")}
+                  onClick={() => {
+                    onClick({ target: { name: name, value: item.props.value } });
+                    settoggle(false);
+                  }}
+                >
+                  <span className="truncate">{item.props.children}</span>
+                  {isSelected && (
+                    <span className="w-2 h-2 rounded-full bg-blue-600 flex-shrink-0 ml-2"></span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -87,4 +116,6 @@ Select.prototype = {
   labelName: propTypes.string,
   id: propTypes.string,
   className: propTypes.string,
+  icon: propTypes.elementType,
+  isRequired: propTypes.bool,
 };

@@ -4,9 +4,8 @@ import axios from "configs/axios";
 export default {
   pasienbaru: (payload) => axios.post("/pendaftaran/pasienbaru", payload),
 
-  // detailspasien: (id, tlahir) =>
-  //   axios.get(`pasien/${id}/${tlahir}`).then((res) => res),
-  detailspasien: (nik) => axios.get(`pasien/${nik}`).then((res) => res),
+  detailspasien: (nik, tlahir) =>
+    axios.get(`pasien/${nik}/${tlahir}`).then((res) => res),
   pasienlama: (payload) => axios.post("/pendaftaran/pasienlama", payload),
   detailantrean: (nomr, tanggalperiksa) =>
     axios

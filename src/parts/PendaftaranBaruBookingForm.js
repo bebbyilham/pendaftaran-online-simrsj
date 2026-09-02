@@ -10,20 +10,27 @@ import { ReactComponent as RegisterImages } from "assets/images/daftar-baru.svg"
 // eslint-disable-next-line
 import { useSelector } from "react-redux";
 import useForm from "helpers/hooks/useForm";
-// eslint-disable-next-line
-import fieldErrors from "helpers/fieldErrors";
 
 import Select from "components/Form/Select";
 import Input from "components/Form/Input";
 
 import DatePicker from "react-datepicker";
-
 import "react-datepicker/dist/react-datepicker.css";
 
 import { toast } from "react-toastify";
 import moment from "moment";
 import { useScreenshot, createFileName } from "use-react-screenshot";
-// import "react-toastify/dist/ReactToastify.css";
+import {
+  IdentificationIcon,
+  CalendarIcon,
+  PhoneIcon,
+  UserIcon,
+  LocationMarkerIcon,
+  OfficeBuildingIcon,
+  CheckCircleIcon,
+  DownloadIcon,
+  SparklesIcon,
+} from "@heroicons/react/solid";
 
 function PendaftaranBaruBookingForm({ history }) {
   const [
@@ -35,11 +42,9 @@ function PendaftaranBaruBookingForm({ history }) {
       nohp,
       alamat,
       pembayaran,
-      // eslint-disable-next-line
       pembayaranlain,
       nokartu,
       tanggallahir,
-      // eslint-disable-next-line
       politujuan,
       tglkunjungan,
     },
@@ -58,94 +63,12 @@ function PendaftaranBaruBookingForm({ history }) {
     politujuan: "",
     tglkunjungan: "",
   });
-  // const BPJS = useSelector((state) => state.bpjs);
-  async function cekpeserta(e) {
-    e.preventDefault();
-    // this.setState(prevState => ({
-    //   showButton: !prevState.showButton,
-    //   showButtonName: "SAVING..."
-    // }));
-    // alert("Great Shot!");
-    /** Mocking we updating the API and using the response to update the state */
-    // setTimeout(() => {
-    //   this.setState(prevState => ({
-    //     showData: !prevState.showData,
-    //     showButtonName: "SAVE"
-    //   }));
-    // }, 3000);
-    bpjs
-      .cekpeserta({
-        nokartu,
-        // email,
-        // password,
-        // pembayaran: pembayaran === "bpjs" ? pembayaranlain : pembayaran,
-      })
-      .then((res) => {
-        // console.log(res);
-        // console.log(res.metaData);
-        if (res.peserta) {
-          toast.info(res.peserta.statusPeserta.keterangan, {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        }
-        if (res.metaData) {
-          toast.error(res.metaData.message, {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        }
-      })
-      .catch((err) => {
-        seterrors(err?.response?.data?.message);
-      });
-  }
 
   const [tlahir, setTlahirDate] = useState(null);
   const [startDate, setStartDate] = useState(null);
   // eslint-disable-next-line
   const [errors, seterrors] = useState(null);
-
   const [polis, setPolis] = useState([]);
-
-  useEffect(() => {
-    async function fetchPoli() {
-      // const response = await poli.details();
-      // // console.log(response.data);
-      // response.errors ? setErrorRequest(true) : setPolis(response.data);
-      pasien
-        .getjenislayanan()
-        .then((res) => {
-          console.log(res);
-
-          setPolis(res.data);
-        })
-        .catch((err) => {
-          toast.error("Server sibuk, coba lagi !", {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-          seterrors(err?.response?.data?.message);
-        });
-    }
-    fetchPoli();
-  }, []);
-
   const [berhasil, setberhasil] = useState(null);
 
   const [noantrean, setnoantrean] = useState(null);
@@ -157,8 +80,6 @@ function PendaftaranBaruBookingForm({ history }) {
   const [tglregistrasi, settglregistrasi] = useState(null);
   const [tglperiksa, settglperiksa] = useState(null);
 
-  // const ERRORS = fieldErrors(errors);
-
   const ref = createRef(null);
   // eslint-disable-next-line
   const [image, takeScreenShot] = useScreenshot({
@@ -166,17 +87,42 @@ function PendaftaranBaruBookingForm({ history }) {
     quality: 1.0,
   });
 
-  const download = (image, { name = "img", extension = "jpg" } = {}) => {
+  const download = (imgData, { name = "bukti-booking-antrean", extension = "jpg" } = {}) => {
     const a = document.createElement("a");
-    a.href = image;
+    a.href = imgData;
     a.download = createFileName(extension, name);
     a.click();
   };
 
   const downloadScreenshot = () => takeScreenShot(ref.current).then(download);
 
+  useEffect(() => {
+    async function fetchPoli() {
+      pasien
+        .getjenislayanan()
+        .then((res) => {
+          setPolis(res.data);
+        })
+        .catch((err) => {
+          toast.error("Gagal memuat jenis layanan!", {
+            position: "top-center",
+            autoClose: 4000,
+          });
+          seterrors(err?.response?.data?.message);
+        });
+    }
+    fetchPoli();
+  }, []);
+
   async function submit(e) {
     e.preventDefault();
+    if (!nama || !nik || !jeniskelamin || !tlahir || !nohp || !startDate || !alamat || !politujuan) {
+      toast.error("Mohon lengkapi seluruh isian form booking!", {
+        position: "top-center",
+        autoClose: 5000,
+      });
+      return;
+    }
 
     pasien
       .pasienbarubooking({
@@ -188,11 +134,9 @@ function PendaftaranBaruBookingForm({ history }) {
         no_hp: nohp,
         alamat_lengkap: alamat,
         jenis_layanan: politujuan,
-        // pembayaran,
         tanggal_periksa: moment(startDate).format("YYYY-MM-DD"),
       })
       .then((res) => {
-        console.log(res);
         if (res.metadata.code === 200) {
           setberhasil(res.metadata.code);
           setnoantrean(res.response.nomorantrean);
@@ -203,377 +147,286 @@ function PendaftaranBaruBookingForm({ history }) {
           setketerangan(res.response.keterangan);
           settglregistrasi(res.response.tglregistrasi);
           settglperiksa(res.response.tanggalperiksa);
-          history.push("/cariantrean");
+
           toast.success(
-            "Pendaftaran Berhasil Kodebooking " +
-              res.response.kodebooking +
-              " No. Antrean Loket " +
-              res.response.nomorantrean,
+            `Booking Berhasil! Kode Booking: ${res.response.kodebooking}`,
             {
               position: "top-center",
-              autoClose: false,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
+              autoClose: 6000,
             }
           );
+        } else if (res.metadata.code === 201) {
+          toast.warning(res.metadata.message, {
+            position: "top-center",
+            autoClose: 5000,
+          });
         }
-        if (res.metadata.code === 201) {
-          if (
-            res.metadata.message ===
-            "NIK dengan Layanan yang dipilih telah terdaftar, silahkan cari disini !"
-          ) {
-            history.push("/cariantrean");
-            toast.warning(res.metadata.message, {
-              position: "top-center",
-              autoClose: false,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-          } else {
-            toast.warning(res.metadata.message, {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-          }
-        }
-        // history.push("/home");
-        // toast.success(res.message, {
-        //   position: "top-center",
-        //   autoClose: false,
-        //   hideProgressBar: false,
-        //   closeOnClick: true,
-        //   pauseOnHover: true,
-        //   draggable: true,
-        //   progress: undefined,
-        // });
       })
       .catch((err) => {
-        // console.log(err);
-        toast.error("Data belum lengkap !", {
+        toast.error("Gagal memproses booking pendaftaran.", {
           position: "top-center",
           autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
         });
-        // seterrors(err?.response?.data?.message);
       });
   }
 
-  // const ERRORS = fieldErrors(errors);
-
   return (
-    <div className="flex justify-center items-center pb-24">
-      <div className="w-full sm:w-3/12">
-        <h1 className="text-4xl text-blue-500 mb-6">
-          <span className="font-bold">Pendaftaran </span>
-          Rawat Jalan
-          <br />
-          <span className="text-green-800 font-bold"> Pasien Baru </span>
-        </h1>
-        <form onSubmit={submit}>
-          <Input
-            value={nama}
-            // error={ERRORS?.nama?.message}
-            name="nama"
-            onChange={setState}
-            placeholder="Masukan nama lengkap"
-            labelName="Nama"
-          />
-          <Input
-            value={nik}
-            // error={ERRORS?.nik?.message}
-            name="nik"
-            onChange={setState}
-            placeholder="Masukan nik lengkap"
-            labelName="NIK"
-          />
-          {/* <Input
-            value={nomorkk}
-            // error={ERRORS?.nomorkk?.message}
-            name="nomorkk"
-            onChange={setState}
-            placeholder="Masukan nomorkk lengkap"
-            labelName="No KK"
-          /> */}
-          <div className="w-full justify flex">
-            <div className="w-1/2 mr-1">
-              <Select
-                labelName="Jenis Kelamin"
-                name="jeniskelamin"
-                value={jeniskelamin}
-                fallbackText="Pilih"
-                onClick={setState}
-                menuPosition={"fixed"}
-                className="w-full"
-              >
-                <option value="1">Laki - laki</option>
-                <option value="0">Perempuan</option>
-              </Select>
-            </div>
-            <div className="w-1/2">
-              <label
-                htmlFor={tanggallahir}
-                className={["block text-sm font-medium text-gray-900"].join(
-                  " "
-                )}
-              >
-                Tanggal Lahir
-              </label>
-              <DatePicker
-                className="focus:outline-none bg-white border w-full px-5 py-2 mt-1 mb-2 shadow-sm sm:text-sm border-gray-300 rounded-md "
-                selected={tlahir}
-                onChange={(date) => setTlahirDate(date)}
-                peekNextMonth
-                showMonthDropdown
-                showYearDropdown
-                dateFormat="yyyy-MM-dd"
-              />
+    <div className="min-h-screen py-8 px-4 sm:px-6 flex justify-center items-start">
+      <div className="w-full max-w-5xl my-4 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* ===== FORM CARD ===== */}
+        <div
+          className={[
+            "bg-white rounded-3xl shadow-xl border border-gray-100",
+            berhasil === 200 ? "lg:col-span-7" : "lg:col-span-7",
+          ].join(" ")}
+        >
+          {/* Header */}
+          <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-6 sm:p-8 text-white relative rounded-t-3xl overflow-hidden">
+            <div className="relative z-10">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-white bg-opacity-20 text-white border border-white border-opacity-30 mb-3">
+                <span className="w-2 h-2 rounded-full bg-blue-300 animate-pulse"></span>
+                Booking Online
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                Pendaftaran Pasien Baru (Booking)
+              </h1>
+              <p className="text-blue-100 text-sm mt-1.5 max-w-lg">
+                Reservasi antrean online sebelum kunjungan ke rumah sakit
+              </p>
             </div>
           </div>
-          <Input
-            value={nohp}
-            // error={ERRORS?.nohp?.message}
-            name="nohp"
-            onChange={setState}
-            placeholder="No. Hp"
-            labelName="Nomor Handphone"
-          />
-          <Input
-            value={alamat}
-            // error={ERRORS?.alamat?.message}
-            name="alamat"
-            onChange={setState}
-            placeholder="Alamat Lengkap"
-            labelName="Alamat"
-          />
 
-          <label
-            htmlFor={tglkunjungan}
-            className={["block text-sm font-medium text-gray-900"].join(" ")}
-          >
-            Tanggal Kunjungan
-          </label>
-          <DatePicker
-            className="focus:outline-none bg-white border w-full px-5 py-2 mt-1 mb-2 shadow-sm sm:text-sm border-gray-300 rounded-md "
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            minDate={new Date().setDate(new Date().getDate() + 1)}
-            showDisabledMonthNavigation
-            dropdownMode="select"
-            dateFormat="yyyy-MM-dd"
-            labelName="Tanggal Lahir"
-          />
-          <div className="w-full justify flex">
-            {/* <div className="w-1/2 mr-1">
-              <Select
-                labelName="Poli Tujuan"
-                name="politujuan"
-                value={politujuan}
-                fallbackText="Pilih poli"
-                onClick={setState}
-                menuPosition={"fixed"}
-                className="w-full"
-              >
-                <option value="1">JIWA</option>
-                <option value="2">ANAK</option>
-              </Select>
-            </div> */}
-            <div className="w-full">
+          {/* Form Content */}
+          <div className="p-6 sm:p-8">
+            <form onSubmit={submit} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+                <Input
+                  value={nama}
+                  name="nama"
+                  onChange={setState}
+                  placeholder="Nama lengkap pasien"
+                  labelName="Nama Lengkap"
+                  icon={UserIcon}
+                  isRequired={true}
+                />
+
+                <Input
+                  value={nik}
+                  name="nik"
+                  type="text"
+                  onChange={setState}
+                  placeholder="16 digit NIK"
+                  labelName="NIK (KTP/KK)"
+                  icon={IdentificationIcon}
+                  isRequired={true}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+                <Select
+                  labelName="Jenis Kelamin"
+                  name="jeniskelamin"
+                  value={jeniskelamin}
+                  fallbackText="-- Pilih Jenis Kelamin --"
+                  icon={UserIcon}
+                  onClick={setState}
+                  isRequired={true}
+                >
+                  <option value="1">Laki - laki</option>
+                  <option value="0">Perempuan</option>
+                </Select>
+
+                <div className="flex flex-col mb-4">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+                    Tanggal Lahir <span className="text-red-500 font-bold">*</span>
+                  </label>
+                  <div className="relative flex items-center w-full">
+                    <div className="absolute left-3.5 flex items-center pointer-events-none text-gray-400 z-10">
+                      <CalendarIcon className="w-5 h-5" />
+                    </div>
+                    <DatePicker
+                      className="w-full h-11 pl-11 pr-4 bg-gray-50 hover:bg-white focus:bg-white border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 text-sm rounded-xl transition-all duration-200 focus:outline-none shadow-sm text-gray-900"
+                      selected={tlahir}
+                      onChange={(date) => setTlahirDate(date)}
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      scrollableYearDropdown
+                      yearDropdownItemNumber={100}
+                      maxDate={new Date()}
+                      portalId="root"
+                      popperPlacement="bottom-start"
+                      dateFormat="dd/MM/yyyy"
+                      placeholderText="DD/MM/YYYY"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+                <Input
+                  value={nohp}
+                  name="nohp"
+                  type="text"
+                  onChange={setState}
+                  placeholder="Contoh: 081234567890"
+                  labelName="Nomor Handphone (WhatsApp)"
+                  icon={PhoneIcon}
+                  isRequired={true}
+                />
+
+                <div className="flex flex-col mb-4">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+                    Tanggal Kunjungan <span className="text-red-500 font-bold">*</span>
+                  </label>
+                  <div className="relative flex items-center w-full">
+                    <div className="absolute left-3.5 flex items-center pointer-events-none text-gray-400 z-10">
+                      <CalendarIcon className="w-5 h-5" />
+                    </div>
+                    <DatePicker
+                      className="w-full h-11 pl-11 pr-4 bg-gray-50 hover:bg-white focus:bg-white border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 text-sm rounded-xl transition-all duration-200 focus:outline-none shadow-sm text-gray-900"
+                      selected={startDate}
+                      onChange={(date) => setStartDate(date)}
+                      minDate={new Date(Date.now() + 24 * 60 * 60 * 1000)}
+                      portalId="root"
+                      popperPlacement="bottom-start"
+                      dateFormat="dd/MM/yyyy"
+                      placeholderText="DD/MM/YYYY"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <Input
+                value={alamat}
+                name="alamat"
+                onChange={setState}
+                placeholder="Alamat domisili lengkap"
+                labelName="Alamat Pasien"
+                icon={LocationMarkerIcon}
+                isRequired={true}
+              />
+
               <Select
                 labelName="Jenis Layanan"
                 name="politujuan"
                 value={politujuan}
-                fallbackText="Pilih layanan"
+                fallbackText="-- Pilih Jenis Layanan --"
+                icon={OfficeBuildingIcon}
                 onClick={setState}
-                menuPosition={"auto"}
-                className="w-1/2"
+                isRequired={true}
               >
                 {polis.map((value) => (
-                  <option
-                    className="w-1/2 mr-1"
-                    value={value.id}
-                    key={value.id}
-                  >
+                  <option value={value.id} key={value.id}>
                     {value.nama_layanan}
                   </option>
                 ))}
               </Select>
-            </div>
-          </div>
 
-          {/* {pembayaran === "BPJS" && (
-            <form>
-              <div className="w-full justify flex">
-                <div className="w-1/2">
-                  <Input
-                    value={nokartu}
-                    // error={ERRORS?.nokartu?.message}
-                    name="nokartu"
-                    type="text"
-                    onChange={setState}
-                    placeholder="Masukan nomor kartu"
-                    labelName="Nomor Kartu"
-                  />
-                </div>
-                <div className="w-1/4 mt-5 ml-2">
-                  <button
-                    onClick={cekpeserta}
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-800 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-1 w-full"
-                  >
-                    Cek
-                  </button>
-                </div>
-              </div>
-            </form>
-          )} */}
-
-          <div className="hidden sm:block" aria-hidden="true">
-            <div className="py-5">
-              <div className="border-t border-gray-200" />
-            </div>
-          </div>
-          <button
-            type="submit"
-            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-800 hover:bg-green-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 mt-1 w-full"
-          >
-            Daftar
-          </button>
-        </form>
-      </div>
-
-      <div className="hidden w-full sm:w-3/12">
-        {(berhasil === 200 && (
-          <>
-            <div className="w-full rounded-xl sm:w-3/12 xs:w-full p-4 ">
-              <div
-                ref={ref}
-                className="bg-white rounded-xl shadow-lg shadow-neutral-200 w-full"
+              <button
+                type="submit"
+                className="w-full h-12 rounded-2xl text-base font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-lg shadow-blue-600/25 transition-all duration-150 cursor-pointer mt-2"
               >
-                <div className="bg-white rounded-xl p-8 w-full">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <span className="text-lg font-semibold text-neutral-700">
-                        {nampasien}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between mt-0.5">
-                    <div className="flex items-center">
-                      <span className="text-sm font-normal text-neutral-700">
-                        {nomorrm}
-                      </span>
-                    </div>
-                    <div className="flex items-center ">
-                      <p className="font-normal text-neutral-400 text-sm">
-                        {tglregistrasi}
-                      </p>
-                      {/* <p className="mt-0.5  text-neutral-400 text-sm">
-                      {tglregistrasi}
-                    </p> */}
-                    </div>
-                  </div>
-
-                  <span className="text-green-500 text-sm mt-2 font-extrabold">
-                    ✓ Bukti Pendaftaran Online
-                  </span>
-
-                  <div className="flex items-center justify-between mt-5">
-                    <div className="flex items-center">
-                      <span className="text-neutral-400 text-md sm:text-xs">
-                        Kode Booking
-                      </span>
-                    </div>
-                    <div className="flex items-center">
-                      <span className="font-extrabold text-neutral-400 text-lg sm:text-sm">
-                        {kodebooking}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between mt-5">
-                    <div className="flex items-center">
-                      <span className="text-neutral-400 text-md sm:text-xs">
-                        Nomor Antrean
-                      </span>
-                    </div>
-                    <div className="flex items-center">
-                      <span className="font-extrabold text-neutral-400 text-lg sm:text-sm">
-                        {noantrean}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="mt-5 border-t border-dashed space-y-4 py-4">
-                    <div className="flex justify-between group duration-150 cursor-pointer">
-                      <div>
-                        <p className="text-md text-neutral-600 sm:text-xs">
-                          Tanggal Kunjungan
-                        </p>
-                      </div>
-                      <span className="text-md text-neutral-600 sm:text-xs">
-                        {tglperiksa}
-                      </span>
-                    </div>
-                    <div className="flex justify-between group duration-150 cursor-pointer">
-                      <div>
-                        <p className="text-md text-neutral-600 sm:text-xs">
-                          Poli
-                        </p>
-                      </div>
-                      <span className="text-md text-neutral-600 sm:text-xs">
-                        {nampoli}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="text-center text-xs font-semibold rounded-lg mt-3">
-                    {"*"}
-                    {keterangan}
-                  </div>
-                  <div className="mt-2 border-t border-dashed"></div>
-                  <div className="text-center text-neutral-400 font-semibold rounded-lg mt-3">
-                    {"RS Jiwa Prof HB Saanin Padang"}
-                  </div>
-                </div>
-              </div>
-              <div className="w-5/6 ml-10 items-end">
-                <div className="hidden sm:block" aria-hidden="true">
-                  <div className="py-5">
-                    <div className="border-t border-gray-200" />
-                  </div>
-                </div>
-                <button
-                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-800 hover:bg-green-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 mt-1 w-full"
-                  onClick={downloadScreenshot}
-                >
-                  Download Bukti Pendaftaran
-                </button>
-              </div>
-            </div>
-          </>
-        )) ||
-          berhasil !== 200}
-      </div>
-      <div className="w-5/12 hidden sm:block flex justify-end pt-24 pr-0 pl-20">
-        <div className="relative" style={{ width: 369, height: 440 }}>
-          <div className="absolute w-full h-full -mb-8 -ml-2">
-            <div className="absolute w-full h-full -mb-8 -ml-2">
-              <RegisterImages></RegisterImages>
-            </div>
+                Booking Jadwal Sekarang
+              </button>
+            </form>
           </div>
         </div>
+
+        {/* ===== RIGHT PANEL (TICKET OR ILLUSTRATION) ===== */}
+        {berhasil === 200 ? (
+          <div className="lg:col-span-5 space-y-4">
+            <div
+              ref={ref}
+              className="bg-white rounded-3xl shadow-xl shadow-slate-200/70 border border-slate-100 overflow-hidden"
+            >
+              {/* Ticket Top Banner */}
+              <div className="bg-gradient-to-br from-indigo-600 to-blue-700 p-6 text-white text-center relative overflow-hidden">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/20 text-white mb-2">
+                  <CheckCircleIcon className="w-4 h-4 text-white" />
+                  <span>Booking Berhasil</span>
+                </div>
+                <h3 className="text-xl font-extrabold">{nampasien}</h3>
+                <p className="text-xs text-blue-100 font-mono mt-1">
+                  NO. REKAM MEDIS: {nomorrm}
+                </p>
+              </div>
+
+              {/* Ticket Details */}
+              <div className="p-6 space-y-4">
+                <div className="grid grid-cols-2 gap-3 bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
+                  <div>
+                    <span className="text-[10px] uppercase font-bold text-gray-400 block mb-0.5">
+                      Kode Booking
+                    </span>
+                    <span className="text-sm sm:text-base font-extrabold font-mono text-slate-800 break-all">
+                      {kodebooking}
+                    </span>
+                  </div>
+                  <div className="border-l border-slate-200">
+                    <span className="text-[10px] uppercase font-bold text-gray-400 block mb-0.5">
+                      Nomor Antrean
+                    </span>
+                    <span className="text-2xl font-black font-mono text-indigo-600">
+                      {noantrean}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="space-y-2.5 text-xs text-slate-600 pt-2 border-t border-dashed border-slate-200">
+                  <div className="flex justify-between py-1">
+                    <span className="text-gray-500 font-medium">Poli / Layanan:</span>
+                    <span className="font-bold text-gray-900">{nampoli}</span>
+                  </div>
+                  <div className="flex justify-between py-1">
+                    <span className="text-gray-500 font-medium">Tgl Kunjungan:</span>
+                    <span className="font-bold text-gray-900">{tglperiksa}</span>
+                  </div>
+                  <div className="flex justify-between py-1">
+                    <span className="text-gray-500 font-medium">Tgl Registrasi:</span>
+                    <span className="font-medium text-gray-700">{tglregistrasi}</span>
+                  </div>
+                </div>
+
+                {keterangan && (
+                  <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-[11px] text-amber-800 font-medium">
+                    * {keterangan}
+                  </div>
+                )}
+
+                <div className="text-center text-[10px] uppercase tracking-wider text-gray-400 font-semibold pt-3 border-t border-dashed border-slate-200">
+                  RS Jiwa Prof. HB Saanin Padang
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={downloadScreenshot}
+              className="w-full h-12 rounded-2xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 shadow-lg shadow-blue-500/25 transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <DownloadIcon className="w-5 h-5" />
+              <span>Download Bukti Booking</span>
+            </button>
+          </div>
+        ) : (
+          <div className="lg:col-span-5 hidden lg:flex flex-col items-center justify-center bg-white rounded-3xl shadow-xl shadow-slate-200/70 border border-slate-100 p-8 text-center">
+            <div className="w-full max-w-[280px] mb-6 p-4">
+              <RegisterImages className="w-full h-auto" />
+            </div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 mb-3 border border-indigo-100">
+              <SparklesIcon className="w-4 h-4 text-indigo-600" />
+              <span>Booking Praktis</span>
+            </div>
+            <h3 className="text-lg font-bold text-slate-900 mb-2">
+              Reservasi Jadwal Lebih Mudah
+            </h3>
+            <p className="text-xs text-slate-500 leading-relaxed max-w-sm">
+              Tentukan tanggal kunjungan yang Anda inginkan dan peroleh kode booking untuk administrasi di rumah sakit.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
