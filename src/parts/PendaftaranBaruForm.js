@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 
 import pasien from "constants/api/pasiens";
-
 import bpjs from "constants/api/bpjs";
 
 import { ReactComponent as RegisterImages } from "assets/images/daftar-baru.svg";
@@ -10,19 +9,26 @@ import { ReactComponent as RegisterImages } from "assets/images/daftar-baru.svg"
 // eslint-disable-next-line
 import { useSelector } from "react-redux";
 import useForm from "helpers/hooks/useForm";
-// eslint-disable-next-line
-import fieldErrors from "helpers/fieldErrors";
 
 import Select from "components/Form/Select";
 import Input from "components/Form/Input";
 
 import DatePicker from "react-datepicker";
-
 import "react-datepicker/dist/react-datepicker.css";
 
 import { toast } from "react-toastify";
 import moment from "moment";
-// import "react-toastify/dist/ReactToastify.css";
+import {
+  IdentificationIcon,
+  CalendarIcon,
+  PhoneIcon,
+  UserIcon,
+  LocationMarkerIcon,
+  CreditCardIcon,
+  CheckCircleIcon,
+  SearchIcon,
+  SparklesIcon,
+} from "@heroicons/react/solid";
 
 function PendaftaranBaruForm({ history }) {
   const [
@@ -34,11 +40,9 @@ function PendaftaranBaruForm({ history }) {
       nohp,
       alamat,
       pembayaran,
-      // eslint-disable-next-line
       pembayaranlain,
       nokartu,
       tanggallahir,
-      // eslint-disable-next-line
       politujuan,
       tglkunjungan,
     },
@@ -57,51 +61,38 @@ function PendaftaranBaruForm({ history }) {
     politujuan: "",
     tglkunjungan: "",
   });
-  // const BPJS = useSelector((state) => state.bpjs);
+
+  const [tlahir, setTlahirDate] = useState(null);
+  const [startDate, setStartDate] = useState(null);
+  // eslint-disable-next-line
+  const [errors, seterrors] = useState(null);
+
   async function cekpeserta(e) {
     e.preventDefault();
-    // this.setState(prevState => ({
-    //   showButton: !prevState.showButton,
-    //   showButtonName: "SAVING..."
-    // }));
-    // alert("Great Shot!");
-    /** Mocking we updating the API and using the response to update the state */
-    // setTimeout(() => {
-    //   this.setState(prevState => ({
-    //     showData: !prevState.showData,
-    //     showButtonName: "SAVE"
-    //   }));
-    // }, 3000);
+    if (!nokartu) {
+      toast.error("Masukkan nomor kartu BPJS terlebih dahulu!", {
+        position: "top-center",
+        autoClose: 4000,
+      });
+      return;
+    }
+
     bpjs
       .cekpeserta({
         nokartu,
-        // email,
-        // password,
-        // pembayaran: pembayaran === "bpjs" ? pembayaranlain : pembayaran,
       })
       .then((res) => {
-        // console.log(res);
-        // console.log(res.metaData);
         if (res.peserta) {
-          toast.info(res.peserta.statusPeserta.keterangan, {
+          toast.info("Status Peserta: " + res.peserta.statusPeserta.keterangan, {
             position: "top-center",
             autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
+            icon: () => <CheckCircleIcon className="h-5 w-5 text-emerald-500" />,
           });
         }
-        if (res.metaData) {
-          toast.error(res.metaData.message, {
+        if (res.metaData && res.metaData.code !== "200") {
+          toast.error("Status Peserta: " + res.metaData.message, {
             position: "top-center",
             autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
           });
         }
       })
@@ -110,13 +101,15 @@ function PendaftaranBaruForm({ history }) {
       });
   }
 
-  const [tlahir, setTlahirDate] = useState(null);
-  const [startDate, setStartDate] = useState(null);
-  // eslint-disable-next-line
-  const [errors, seterrors] = useState(null);
-
   async function submit(e) {
     e.preventDefault();
+    if (!nama || !nik || !jeniskelamin || !tlahir || !nohp || !startDate || !alamat || !pembayaran) {
+      toast.error("Mohon lengkapi seluruh isian data pasien!", {
+        position: "top-center",
+        autoClose: 5000,
+      });
+      return;
+    }
 
     pasien
       .pasienbaru({
@@ -132,246 +125,229 @@ function PendaftaranBaruForm({ history }) {
         tanggalperiksa: moment(startDate).format("YYYY-MM-DD"),
       })
       .then((res) => {
-        // console.log(res.status);
         if (res.metadata.code === 200) {
           history.push("/home");
           toast.success(
-            "Pendaftaran Berhasil Kodebooking " +
-              res.response.kodebooking +
-              " dengan No. Rekam Medik " +
-              res.response.norm +
-              " No. Antrean Loket " +
-              res.response.nomorantrean,
+            `Pendaftaran Berhasil! Kode Booking: ${res.response.kodebooking} (No. RM: ${res.response.norm})`,
             {
               position: "top-center",
-              autoClose: false,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
+              autoClose: 6000,
             }
           );
-        }
-        if (res.metadata.code === 201) {
-          toast.warning(res.metadata.message, {
+        } else {
+          toast.warning(res.metadata.message || "Gagal melakukan pendaftaran pasien baru.", {
             position: "top-center",
             autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
           });
         }
-        // history.push("/home");
-        // toast.success(res.message, {
-        //   position: "top-center",
-        //   autoClose: false,
-        //   hideProgressBar: false,
-        //   closeOnClick: true,
-        //   pauseOnHover: true,
-        //   draggable: true,
-        //   progress: undefined,
-        // });
       })
       .catch((err) => {
-        // console.log(err?.response?.data?.message);
-        toast.error("Data belum lengkap !", {
+        toast.error("Gagal melakukan pendaftaran pasien baru. Silakan coba kembali.", {
           position: "top-center",
           autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
         });
-        // seterrors(err?.response?.data?.message);
       });
   }
 
-  // const ERRORS = fieldErrors(errors);
-
   return (
-    <div className="flex justify-center items-center pb-24">
-      <div className="w-full sm:w-3/12">
-        <h1 className="text-4xl text-blue-500 mb-6">
-          <span className="font-bold">Pendaftaran </span>
-          Rawat Jalan
-          <br />
-          <span className="text-green-800 font-bold"> Pasien Baru </span>
-        </h1>
-        <form onSubmit={submit}>
-          <Input
-            value={nama}
-            // error={ERRORS?.nama?.message}
-            name="nama"
-            onChange={setState}
-            placeholder="Masukan nama lengkap"
-            labelName="Nama"
-          />
-          <Input
-            value={nik}
-            // error={ERRORS?.nik?.message}
-            name="nik"
-            onChange={setState}
-            placeholder="Masukan nik lengkap"
-            labelName="NIK"
-          />
-          {/* <Input
-            value={nomorkk}
-            // error={ERRORS?.nomorkk?.message}
-            name="nomorkk"
-            onChange={setState}
-            placeholder="Masukan nomorkk lengkap"
-            labelName="No KK"
-          /> */}
-          <div className="w-full justify flex">
-            <div className="w-1/2 mr-1">
-              <Select
-                labelName="Jenis Kelamin"
-                name="jeniskelamin"
-                value={jeniskelamin}
-                fallbackText="Pilih"
-                onClick={setState}
-                menuPosition={"fixed"}
-                className="w-full"
-              >
-                <option value="1">Laki - laki</option>
-                <option value="0">Perempuan</option>
-              </Select>
-            </div>
-            <div className="w-1/2">
-              <label
-                htmlFor={tanggallahir}
-                className={["block text-sm font-medium text-gray-900"].join(
-                  " "
-                )}
-              >
-                Tanggal Lahir
-              </label>
-              <DatePicker
-                className="focus:outline-none bg-white border w-full px-5 py-2 mt-1 mb-2 shadow-sm sm:text-sm border-gray-300 rounded-md "
-                selected={tlahir}
-                onChange={(date) => setTlahirDate(date)}
-                peekNextMonth
-                showMonthDropdown
-                showYearDropdown
-                dateFormat="yyyy-MM-dd"
-              />
-            </div>
-          </div>
-          <Input
-            value={nohp}
-            // error={ERRORS?.nohp?.message}
-            name="nohp"
-            onChange={setState}
-            placeholder="No. Hp"
-            labelName="Nomor Handphone"
-          />
-          <Input
-            value={alamat}
-            // error={ERRORS?.alamat?.message}
-            name="alamat"
-            onChange={setState}
-            placeholder="Alamat Lengkap"
-            labelName="Alamat"
-          />
-
-          <label
-            htmlFor={tglkunjungan}
-            className={["block text-sm font-medium text-gray-900"].join(" ")}
-          >
-            Tanggal Kunjungan
-          </label>
-          <DatePicker
-            className="focus:outline-none bg-white border w-full px-5 py-2 mt-1 mb-2 shadow-sm sm:text-sm border-gray-300 rounded-md "
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            minDate={new Date().setDate(new Date().getDate() + 1)}
-            showDisabledMonthNavigation
-            dropdownMode="select"
-            dateFormat="yyyy-MM-dd"
-            labelName="Tanggal Lahir"
-          />
-          <div className="w-full justify flex">
-            {/* <div className="w-1/2 mr-1">
-              <Select
-                labelName="Poli Tujuan"
-                name="politujuan"
-                value={politujuan}
-                fallbackText="Pilih poli"
-                onClick={setState}
-                menuPosition={"fixed"}
-                className="w-full"
-              >
-                <option value="1">JIWA</option>
-                <option value="2">ANAK</option>
-              </Select>
-            </div> */}
-            <div className="w-full">
-              <Select
-                labelName="Pilih Pembayaran"
-                name="pembayaran"
-                value={pembayaran}
-                fallbackText="pembayaran"
-                onClick={setState}
-                className="w-full"
-              >
-                <option value="UMUM">Umum</option>
-                <option value="BPJS">BPJS</option>
-              </Select>
+    <div className="min-h-screen py-8 px-4 sm:px-6 flex justify-center items-start">
+      <div className="w-full max-w-5xl my-4 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* ===== FORM CARD ===== */}
+        <div className="lg:col-span-7 bg-white rounded-3xl shadow-xl border border-gray-100">
+          {/* Header */}
+          <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-6 sm:p-8 text-white relative rounded-t-3xl overflow-hidden">
+            <div className="relative z-10">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-white bg-opacity-20 text-white border border-white border-opacity-30 mb-3">
+                <span className="w-2 h-2 rounded-full bg-blue-300 animate-pulse"></span>
+                Pasien Baru
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                Pendaftaran Pasien Baru
+              </h1>
+              <p className="text-blue-100 text-sm mt-1.5 max-w-lg">
+                Lengkapi formulir registrasi data diri pasien baru rawat jalan
+              </p>
             </div>
           </div>
 
-          {pembayaran === "BPJS" && (
-            <form>
-              <div className="w-full justify flex">
-                <div className="w-1/2">
-                  <Input
-                    value={nokartu}
-                    // error={ERRORS?.nokartu?.message}
-                    name="nokartu"
-                    type="text"
-                    onChange={setState}
-                    placeholder="Masukan nomor kartu"
-                    labelName="Nomor Kartu"
-                  />
-                </div>
-                <div className="w-1/4 mt-5 ml-2">
-                  <button
-                    onClick={cekpeserta}
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-800 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-1 w-full"
-                  >
-                    Cek
-                  </button>
+          {/* Form Content */}
+          <div className="p-6 sm:p-8">
+            <form onSubmit={submit} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+                <Input
+                  value={nama}
+                  name="nama"
+                  onChange={setState}
+                  placeholder="Nama lengkap sesuai KTP"
+                  labelName="Nama Lengkap"
+                  icon={UserIcon}
+                  isRequired={true}
+                />
+
+                <Input
+                  value={nik}
+                  name="nik"
+                  type="text"
+                  onChange={setState}
+                  placeholder="16 digit NIK"
+                  labelName="NIK (KTP/KK)"
+                  icon={IdentificationIcon}
+                  isRequired={true}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+                <Select
+                  labelName="Jenis Kelamin"
+                  name="jeniskelamin"
+                  value={jeniskelamin}
+                  fallbackText="-- Pilih Jenis Kelamin --"
+                  icon={UserIcon}
+                  onClick={setState}
+                  isRequired={true}
+                >
+                  <option value="1">Laki - laki</option>
+                  <option value="0">Perempuan</option>
+                </Select>
+
+                <div className="flex flex-col mb-4">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+                    Tanggal Lahir <span className="text-red-500 font-bold">*</span>
+                  </label>
+                  <div className="relative flex items-center w-full">
+                    <div className="absolute left-3.5 flex items-center pointer-events-none text-gray-400 z-10">
+                      <CalendarIcon className="w-5 h-5" />
+                    </div>
+                    <DatePicker
+                      className="w-full h-11 pl-11 pr-4 bg-gray-50 hover:bg-white focus:bg-white border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 text-sm rounded-xl transition-all duration-200 focus:outline-none shadow-sm text-gray-900"
+                      selected={tlahir}
+                      onChange={(date) => setTlahirDate(date)}
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      scrollableYearDropdown
+                      yearDropdownItemNumber={100}
+                      maxDate={new Date()}
+                      portalId="root"
+                      popperPlacement="bottom-start"
+                      dateFormat="dd/MM/yyyy"
+                      placeholderText="DD/MM/YYYY"
+                    />
+                  </div>
                 </div>
               </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+                <Input
+                  value={nohp}
+                  name="nohp"
+                  type="text"
+                  onChange={setState}
+                  placeholder="Contoh: 081234567890"
+                  labelName="Nomor Handphone (WhatsApp)"
+                  icon={PhoneIcon}
+                  isRequired={true}
+                />
+
+                <div className="flex flex-col mb-4">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+                    Tanggal Kunjungan <span className="text-red-500 font-bold">*</span>
+                  </label>
+                  <div className="relative flex items-center w-full">
+                    <div className="absolute left-3.5 flex items-center pointer-events-none text-gray-400 z-10">
+                      <CalendarIcon className="w-5 h-5" />
+                    </div>
+                    <DatePicker
+                      className="w-full h-11 pl-11 pr-4 bg-gray-50 hover:bg-white focus:bg-white border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 text-sm rounded-xl transition-all duration-200 focus:outline-none shadow-sm text-gray-900"
+                      selected={startDate}
+                      onChange={(date) => setStartDate(date)}
+                      minDate={new Date(Date.now() + 24 * 60 * 60 * 1000)}
+                      portalId="root"
+                      popperPlacement="bottom-start"
+                      dateFormat="dd/MM/yyyy"
+                      placeholderText="DD/MM/YYYY"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <Input
+                value={alamat}
+                name="alamat"
+                onChange={setState}
+                placeholder="Alamat domisili lengkap pasien"
+                labelName="Alamat Domisili"
+                icon={LocationMarkerIcon}
+                isRequired={true}
+              />
+
+              <Select
+                labelName="Jenis Pembayaran"
+                name="pembayaran"
+                value={pembayaran}
+                fallbackText="-- Pilih Jenis Pembayaran --"
+                icon={CreditCardIcon}
+                onClick={setState}
+                isRequired={true}
+              >
+                <option value="UMUM">Umum (Mandiri / Tunai)</option>
+                <option value="BPJS">BPJS Kesehatan</option>
+              </Select>
+
+              {pembayaran === "BPJS" && (
+                <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-3.5 items-end">
+                    <div className="sm:col-span-8">
+                      <Input
+                        value={nokartu}
+                        name="nokartu"
+                        type="text"
+                        onChange={setState}
+                        placeholder="13 digit nomor kartu BPJS"
+                        labelName="Nomor Kartu BPJS"
+                        icon={CreditCardIcon}
+                      />
+                    </div>
+                    <div className="sm:col-span-4 mb-4">
+                      <button
+                        type="button"
+                        onClick={cekpeserta}
+                        className="w-full h-11 inline-flex items-center justify-center gap-2 px-3 rounded-xl text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 shadow-md shadow-emerald-600/20 transition-all duration-150 cursor-pointer"
+                      >
+                        <SearchIcon className="h-4 w-4" />
+                        <span>Cek Kartu</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <button
+                type="submit"
+                className="w-full h-12 rounded-2xl text-base font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-lg shadow-blue-600/25 transition-all duration-150 cursor-pointer mt-2"
+              >
+                Daftar Pasien Baru
+              </button>
             </form>
-          )}
-
-          <div className="hidden sm:block" aria-hidden="true">
-            <div className="py-5">
-              <div className="border-t border-gray-200" />
-            </div>
           </div>
-          <button
-            type="submit"
-            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-800 hover:bg-green-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 mt-1 w-full"
-          >
-            Daftar
-          </button>
-        </form>
-      </div>
+        </div>
 
-      <div className="w-1/12 hidden sm:block"></div>
-      <div className="w-5/12 hidden sm:block flex justify-end pt-24 pr-0 pl-20">
-        <div className="relative" style={{ width: 369, height: 440 }}>
-          <div className="absolute w-full h-full -mb-8 -ml-2">
-            <div className="absolute w-full h-full -mb-8 -ml-2">
-              <RegisterImages></RegisterImages>
-            </div>
+        {/* ===== ILLUSTRATION PANEL ===== */}
+        <div className="lg:col-span-5 hidden lg:flex flex-col items-center justify-center bg-white rounded-3xl shadow-xl shadow-slate-200/70 border border-slate-100 p-8 text-center">
+          <div className="w-full max-w-[280px] mb-6 p-4">
+            <RegisterImages className="w-full h-auto" />
           </div>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 mb-3 border border-blue-100">
+            <SparklesIcon className="w-4 h-4 text-blue-600" />
+            <span>Pelayanan Prima</span>
+          </div>
+          <h3 className="text-lg font-bold text-slate-900 mb-2">
+            Pendaftaran Mudah & Cepat
+          </h3>
+          <p className="text-xs text-slate-500 leading-relaxed max-w-sm">
+            Daftarkan diri Anda atau keluarga tanpa antre langsung di rumah sakit. Simpan bukti kode booking pendaftaran setelah pendaftaran selesai.
+          </p>
         </div>
       </div>
     </div>
