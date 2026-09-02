@@ -46,14 +46,14 @@ function Header({ onLight, location }) {
       {/* Navigation Links inside Drawer */}
       <div className="flex-1 flex flex-col justify-center space-y-4 py-8">
         <a
-          href="http://simrsj.rsjhbsaanin.com/infojadwaldokter"
+          href="https://rsjhbsaanin.sumbarprov.go.id/jadwal-dokter"
           onClick={() => setToggleMenu(false)}
           className="text-blue-600 font-extrabold text-base sm:text-lg px-5 py-4 rounded-2xl bg-white hover:bg-blue-50 active:bg-blue-100 shadow-md transition-all duration-150 block text-center"
         >
           Info Jadwal Dokter
         </a>
         <a
-          href="http://simrsj.rsjhbsaanin.com/infokamar"
+          href="https://rsjhbsaanin.sumbarprov.go.id/info-tempat-tidur"
           onClick={() => setToggleMenu(false)}
           className="text-blue-600 font-extrabold text-base sm:text-lg px-5 py-4 rounded-2xl bg-white hover:bg-blue-50 active:bg-blue-100 shadow-md transition-all duration-150 block text-center"
         >
