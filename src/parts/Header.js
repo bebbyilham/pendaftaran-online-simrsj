@@ -94,13 +94,13 @@ function Header({ onLight, location }) {
       {/* Desktop Navigation */}
       <nav className="hidden sm:flex items-center space-x-1 md:space-x-2">
         <a
-          href="http://simrsj.rsjhbsaanin.com/infojadwaldokter"
+          href="https://rsjhbsaanin.sumbarprov.go.id/jadwal-dokter"
           className={`px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-150 ${linkColor}`}
         >
           Info Jadwal Dokter
         </a>
         <a
-          href="http://simrsj.rsjhbsaanin.com/infokamar"
+          href="https://rsjhbsaanin.sumbarprov.go.id/info-tempat-tidur"
           className={`px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-150 ${linkColor}`}
         >
           Info Kamar
