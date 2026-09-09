@@ -3,13 +3,15 @@ import ReactDOM from "react-dom";
 import propTypes from "prop-types";
 import { Link, withRouter } from "react-router-dom";
 import { ReactComponent as Logo } from "assets/images/logo.svg";
+import surveiKepuasanImg from "assets/images/survei_kepuasan.png";
 import { MenuIcon, XIcon } from "@heroicons/react/solid";
 
 function Header({ onLight, location }) {
   const [toggleMenu, setToggleMenu] = useState(false);
+  const [showSurveyModal, setShowSurveyModal] = useState(false);
 
   useEffect(() => {
-    if (toggleMenu) {
+    if (toggleMenu || showSurveyModal) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
@@ -17,11 +19,54 @@ function Header({ onLight, location }) {
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [toggleMenu]);
+  }, [toggleMenu, showSurveyModal]);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setShowSurveyModal(false);
+      }
+    };
+    if (showSurveyModal) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [showSurveyModal]);
 
   const linkColor = onLight
     ? "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
     : "text-white hover:text-white hover:bg-white hover:bg-opacity-20 font-semibold";
+
+  const surveyModal = showSurveyModal && (
+    <div
+      style={{ zIndex: 99999 }}
+      className="fixed inset-0 flex items-center justify-center p-4 sm:p-6"
+    >
+      <div
+        className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm transition-opacity cursor-pointer"
+        onClick={() => setShowSurveyModal(false)}
+      />
+      <div className="relative bg-white rounded-2xl shadow-2xl max-w-4xl w-full p-2 sm:p-4 z-10 flex flex-col items-center">
+        <button
+          type="button"
+          onClick={() => setShowSurveyModal(false)}
+          className="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 p-2 bg-white text-gray-700 hover:text-gray-900 rounded-full shadow-lg hover:bg-gray-100 focus:outline-none transition-all duration-150 cursor-pointer border border-gray-200"
+          aria-label="Tutup"
+        >
+          <XIcon className="w-5 h-5 sm:w-6 sm:h-6" />
+        </button>
+        <div className="w-full flex justify-center items-center overflow-hidden rounded-xl">
+          <img
+            src={surveiKepuasanImg}
+            alt="Survei Kepuasan Masyarakat"
+            className="w-full h-auto max-h-[80vh] object-contain rounded-xl"
+          />
+        </div>
+      </div>
+    </div>
+  );
 
   const mobileDrawer = toggleMenu && (
     <div
@@ -52,6 +97,16 @@ function Header({ onLight, location }) {
         >
           Info Jadwal Dokter
         </a>
+        <button
+          type="button"
+          onClick={() => {
+            setToggleMenu(false);
+            setShowSurveyModal(true);
+          }}
+          className="text-blue-600 font-extrabold text-base sm:text-lg px-5 py-4 rounded-2xl bg-white hover:bg-blue-50 active:bg-blue-100 shadow-md transition-all duration-150 block text-center w-full cursor-pointer"
+        >
+          Survei Kepuasan
+        </button>
         <a
           href="https://rsjhbsaanin.sumbarprov.go.id/info-tempat-tidur"
           onClick={() => setToggleMenu(false)}
@@ -99,6 +154,13 @@ function Header({ onLight, location }) {
         >
           Info Jadwal Dokter
         </a>
+        <button
+          type="button"
+          onClick={() => setShowSurveyModal(true)}
+          className={`px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-150 cursor-pointer focus:outline-none ${linkColor}`}
+        >
+          Survei Kepuasan
+        </button>
         <a
           href="https://rsjhbsaanin.sumbarprov.go.id/info-tempat-tidur"
           className={`px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-150 ${linkColor}`}
@@ -135,8 +197,9 @@ function Header({ onLight, location }) {
         </button>
       </div>
 
-      {/* Portal rendered directly to document.body */}
+      {/* Portals rendered directly to document.body */}
       {toggleMenu && ReactDOM.createPortal(mobileDrawer, document.body)}
+      {showSurveyModal && ReactDOM.createPortal(surveyModal, document.body)}
     </header>
   );
 }
