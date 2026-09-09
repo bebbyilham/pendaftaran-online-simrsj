@@ -1,0 +1,32 @@
+{
+  "files": {
+    "main.css": "/static/css/main.9a37e627.chunk.css",
+    "main.js": "/static/js/main.a162be77.chunk.js",
+    "main.js.map": "/static/js/main.a162be77.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.32128995.js",
+    "runtime-main.js.map": "/static/js/runtime-main.32128995.js.map",
+    "static/css/2.05ebb7cf.chunk.css": "/static/css/2.05ebb7cf.chunk.css",
+    "static/js/2.e492b04b.chunk.js": "/static/js/2.e492b04b.chunk.js",
+    "static/js/2.e492b04b.chunk.js.map": "/static/js/2.e492b04b.chunk.js.map",
+    "static/js/3.0c70410b.chunk.js": "/static/js/3.0c70410b.chunk.js",
+    "static/js/3.0c70410b.chunk.js.map": "/static/js/3.0c70410b.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.05ebb7cf.chunk.css.map": "/static/css/2.05ebb7cf.chunk.css.map",
+    "static/css/main.9a37e627.chunk.css.map": "/static/css/main.9a37e627.chunk.css.map",
+    "static/js/2.e492b04b.chunk.js.LICENSE.txt": "/static/js/2.e492b04b.chunk.js.LICENSE.txt",
+    "static/media/circle.cb5d2c6d.svg": "/static/media/circle.cb5d2c6d.svg",
+    "static/media/daftar-baru.f8f75585.svg": "/static/media/daftar-baru.f8f75585.svg",
+    "static/media/logo-hbs.a1ec9850.svg": "/static/media/logo-hbs.a1ec9850.svg",
+    "static/media/logo-sumbar.1e1be41a.svg": "/static/media/logo-sumbar.1e1be41a.svg",
+    "static/media/logo.18434102.svg": "/static/media/logo.18434102.svg",
+    "static/media/pic.582d85ee.svg": "/static/media/pic.582d85ee.svg",
+    "static/media/survei_kepuasan.60321199.png": "/static/media/survei_kepuasan.60321199.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.32128995.js",
+    "static/css/2.05ebb7cf.chunk.css",
+    "static/js/2.e492b04b.chunk.js",
+    "static/css/main.9a37e627.chunk.css",
+    "static/js/main.a162be77.chunk.js"
+  ]
+}
